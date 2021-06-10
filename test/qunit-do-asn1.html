@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="qunit.css" type="text/css" media="screen" />
 
 <!-- getPEM -->
-<script src="../ext/yahoo.js"></script>
+
 <script src="../ext/jsbn.js"></script>
 <script src="../ext/jsbn2.js"></script>
 <script src="../ext/base64.js"></script>
@@ -43,9 +43,8 @@ equal((new KJUR.asn1.ASN1Object({tlv: "030101"})).getEncodedHex(), "030101", "{t
 });
 
 test("Boolean Test", function() {
-  var d = new KJUR.asn1.DERBoolean();
-  expect(1);
-  equal(d.getEncodedHex(), "0101ff", "Boolean TRUE");
+  equal(new KJUR.asn1.DERBoolean(true).getEncodedHex(), "0101ff", "Boolean TRUE");
+  equal(new KJUR.asn1.DERBoolean(false).getEncodedHex(), "010100", "Boolean TRUE");
 });
 
 test("Integer Test", function() {

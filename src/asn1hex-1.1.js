@@ -1,9 +1,9 @@
-/* asn1hex-1.2.6.js (c) 2012-2020 Kenji Urushima | kjur.github.com/jsrsasign/license
+/* asn1hex-1.2.9.js (c) 2012-2021 Kenji Urushima | kjur.github.com/jsrsasign/license
  */
 /*
  * asn1hex.js - Hexadecimal represented ASN.1 string library
  *
- * Copyright (c) 2010-2020 Kenji Urushima (kenji.urushima@gmail.com)
+ * Copyright (c) 2010-2021 Kenji Urushima (kenji.urushima@gmail.com)
  *
  * This software is licensed under the terms of the MIT License.
  * https://kjur.github.io/jsrsasign/license/
@@ -16,7 +16,7 @@
  * @fileOverview
  * @name asn1hex-1.1.js
  * @author Kenji Urushima kenji.urushima@gmail.com
- * @version jsrsasign 9.1.6 asn1hex 1.2.6 (2020-Sep-04)
+ * @version jsrsasign 10.1.13 asn1hex 1.2.9 (2021-Mar-07)
  * @license <a href="https://kjur.github.io/jsrsasign/license/">MIT License</a>
  */
 
@@ -591,6 +591,126 @@ ASN1HEX.getVbyListEx = function(h, currentIndex, nthList, checkingTag, removeUnu
 };
 
 /**
+ * get integer value from ASN.1 V(value) of Integer or BitString<br/>
+ * @name getInt
+ * @memberOf ASN1HEX
+ * @function
+ * @param {String} h hexadecimal string
+ * @param {Number} idx string index in h to get ASN.1 DER Integer or BitString
+ * @param {Object} errorReturn (OPTION) error return value (DEFAULT: -1)
+ * @return {Number} ASN.1 DER Integer or BitString value
+ * @since jsrsasign 10.1.0 asn1hex 1.2.7
+ * @see bitstrtoint
+ *
+ * @example
+ * ASN1HEX.getInt("xxxx020103xxxxxx", 4) &rarr 3 // DER Integer
+ * ASN1HEX.getInt("xxxx03020780xxxxxx", 4) &rarr 1 // DER BitStringx
+ * ASN1HEX.getInt("xxxx030203c8xxxxxx", 4) &rarr 25 // DER BitStringx
+ */
+ASN1HEX.getInt = function(h, idx, errorReturn) {
+    if (errorReturn == undefined) errorReturn = -1;
+    try {
+	var hTag = h.substr(idx, 2);
+	if (hTag != "02" && hTag != "03") return errorReturn;
+	var hV = ASN1HEX.getV(h, idx);
+	if (hTag == "02") {
+	    return parseInt(hV, 16);
+	} else {
+	    return bitstrtoint(hV);
+	}
+    } catch(ex) {
+	return errorReturn;
+    }
+};
+
+/**
+ * get object identifier string from ASN.1 V(value)<br/>
+ * @name getOID
+ * @memberOf ASN1HEX
+ * @function
+ * @param {String} h hexadecimal string
+ * @param {Number} idx string index in h to get ASN.1 DER ObjectIdentifier
+ * @param {Object} errorReturn (OPTION) error return value (DEFAULT: null)
+ * @return {String} object identifier string (ex. "1.2.3.4")
+ * @since jsrsasign 10.1.0 asn1hex 1.2.7
+ *
+ * @example
+ * ASN1HEX.getInt("xxxx06032a0304xxxxxx", 4) &rarr "1.2.3.4"
+ */
+ASN1HEX.getOID = function(h, idx, errorReturn) {
+    if (errorReturn == undefined) errorReturn = null;
+    try {
+	if (h.substr(idx, 2) != "06") return errorReturn;
+	var hOID = ASN1HEX.getV(h, idx);
+	return hextooid(hOID);
+    } catch(ex) {
+	return errorReturn;
+    }
+};
+
+/**
+ * get object identifier name from ASN.1 V(value)<br/>
+ * @name getOIDName
+ * @memberOf ASN1HEX
+ * @function
+ * @param {String} h hexadecimal string
+ * @param {Number} idx string index in h to get ASN.1 DER ObjectIdentifier
+ * @param {Object} errorReturn (OPTION) error return value (DEFAULT: null)
+ * @return {String} object identifier name (ex. "sha256") oir OID string
+ * @since jsrsasign 10.1.0 asn1hex 1.2.7
+ *
+ * @description
+ * This static method returns object identifier name such as "sha256"
+ * if registered. If not registered, it returns OID string. 
+ * (ex. "1.2.3.4")
+ *
+ * @example
+ * ASN1HEX.getOIDName("xxxx0609608648016503040201xxxxxx", 4) &rarr "sha256"
+ * ASN1HEX.getOIDName("xxxx06032a0304xxxxxx", 4) &rarr "1.2.3.4"
+ */
+ASN1HEX.getOIDName = function(h, idx, errorReturn) {
+    if (errorReturn == undefined) errorReturn = null;
+    try {
+	var oid = ASN1HEX.getOID(h, idx, errorReturn);
+	if (oid == errorReturn) return errorReturn;
+	var name = KJUR.asn1.x509.OID.oid2name(oid);
+	if (name == '') return oid;
+	return name;
+    } catch(ex) {
+	return errorReturn;
+    }
+};
+
+/**
+ * get raw string from ASN.1 V(value)<br/>
+ * @name getString
+ * @memberOf ASN1HEX
+ * @function
+ * @param {String} h hexadecimal string
+ * @param {Number} idx string index in h to get any ASN.1 DER String
+ * @param {Object} errorReturn (OPTION) error return value (DEFAULT: null)
+ * @return {String} raw string
+ * @since jsrsasign 10.1.3 asn1hex 1.2.8
+ *
+ * @description
+ * This static method returns a raw string from
+ * any ASN.1 DER primitives.
+ *
+ * @example
+ * ASN1HEX.getString("xxxx1303616161xxxxxx", 4) &rarr "aaa"
+ * ASN1HEX.getString("xxxx0c03616161xxxxxx", 4) &rarr "aaa"
+ */
+ASN1HEX.getString = function(h, idx, errorReturn) {
+    if (errorReturn == undefined) errorReturn = null;
+    try {
+	var hV = ASN1HEX.getV(h, idx);
+	return hextorstr(hV);
+    } catch(ex) {
+	return errorReturn;
+    }
+};
+
+/**
  * get OID string from hexadecimal encoded value<br/>
  * @name hextooidstr
  * @memberOf ASN1HEX
@@ -816,7 +936,7 @@ ASN1HEX.dump = function(hexOrObj, flags, idx, indent) {
 	return indent + "VisualString '" + hextoutf8(_getV(hex, idx)) + "'\n";
     }
     if (tag == "1e") {
-	return indent + "BMPString '" + hextoutf8(_getV(hex, idx)) + "'\n";
+	return indent + "BMPString '" + ucs2hextoutf8(_getV(hex, idx)) + "'\n";
     }
     if (tag == "30") {
 	if (hex.substr(idx, 4) == "3000") {

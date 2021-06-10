@@ -1,4 +1,4 @@
-/* asn1-1.0.19.js (c) 2013-2020 Kenji Urushima | kjur.github.com/jsrsasign/license
+/* asn1-1.0.21.js (c) 2013-2020 Kenji Urushima | kjur.github.com/jsrsasign/license
  */
 /*
  * asn1.js - ASN.1 DER encoder classes
@@ -16,7 +16,7 @@
  * @fileOverview
  * @name asn1-1.0.js
  * @author Kenji Urushima kenji.urushima@gmail.com
- * @version jsrsasign 10.0.0 asn1 1.0.19 (2020-Sep-22)
+ * @version jsrsasign 10.1.0 asn1 1.0.21 (2020-Nov-18)
  * @since jsrsasign 2.1
  * @license <a href="https://kjur.github.io/jsrsasign/license/">MIT License</a>
  */
@@ -368,7 +368,7 @@ KJUR.asn1.ASN1Util.oidHexToInt = function(hex) {
 };
 
 /**
- * get hexadecimal value of object identifier from dot noted oid value
+ * get hexadecimal value of object identifier from dot noted oid value (DEPRECATED)
  * @name oidIntToHex
  * @memberOf KJUR.asn1.ASN1Util
  * @function
@@ -376,6 +376,8 @@ KJUR.asn1.ASN1Util.oidHexToInt = function(hex) {
  * @return {String} hexadecimal value of object identifier
  * @since jsrsasign 4.8.3 asn1 1.0.7
  * @see {@link ASN1HEX.hextooidstr}
+ * @deprecated from jsrsasign 10.0.6. please use {@link oidtohex}
+ *
  * @description
  * This static method converts from object identifier value string.
  * to hexadecimal string representation of it.
@@ -618,7 +620,7 @@ KJUR.asn1.DERAbstractString = function(params) {
         }
     }
 };
-YAHOO.lang.extend(KJUR.asn1.DERAbstractString, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.DERAbstractString, KJUR.asn1.ASN1Object);
 // == END   DERAbstractString ================================================
 
 // == BEGIN DERAbstractTime ==================================================
@@ -727,7 +729,7 @@ KJUR.asn1.DERAbstractTime = function(params) {
         return this.hV;
     };
 };
-YAHOO.lang.extend(KJUR.asn1.DERAbstractTime, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.DERAbstractTime, KJUR.asn1.ASN1Object);
 // == END   DERAbstractTime ==================================================
 
 // == BEGIN DERAbstractStructured ============================================
@@ -777,7 +779,7 @@ KJUR.asn1.DERAbstractStructured = function(params) {
         }
     }
 };
-YAHOO.lang.extend(KJUR.asn1.DERAbstractStructured, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.DERAbstractStructured, KJUR.asn1.ASN1Object);
 
 
 // ********************************************************************
@@ -790,15 +792,23 @@ YAHOO.lang.extend(KJUR.asn1.DERAbstractStructured, KJUR.asn1.ASN1Object);
  * @name KJUR.asn1.DERBoolean
  * @class class for ASN.1 DER Boolean
  * @extends KJUR.asn1.ASN1Object
- * @description
  * @see KJUR.asn1.ASN1Object - superclass
+ * @description
+ * In ASN.1 DER, DER Boolean "false" shall be omitted.
+ * However this supports boolean false for future BER support.
+ * @example
+ * new KJUR.asn1.DERBoolean(true)
+ * new KJUR.asn1.DERBoolean(false)
  */
-KJUR.asn1.DERBoolean = function() {
+KJUR.asn1.DERBoolean = function(params) {
     KJUR.asn1.DERBoolean.superclass.constructor.call(this);
     this.hT = "01";
-    this.hTLV = "0101ff";
+    if (params == false)
+	this.hTLV = "010100";
+    else 
+	this.hTLV = "0101ff";
 };
-YAHOO.lang.extend(KJUR.asn1.DERBoolean, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.DERBoolean, KJUR.asn1.ASN1Object);
 
 // ********************************************************************
 /**
@@ -881,7 +891,7 @@ KJUR.asn1.DERInteger = function(params) {
         }
     }
 };
-YAHOO.lang.extend(KJUR.asn1.DERInteger, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.DERInteger, KJUR.asn1.ASN1Object);
 
 // ********************************************************************
 /**
@@ -1055,7 +1065,7 @@ KJUR.asn1.DERBitString = function(params) {
         }
     }
 };
-YAHOO.lang.extend(KJUR.asn1.DERBitString, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.DERBitString, KJUR.asn1.ASN1Object);
 
 // ********************************************************************
 /**
@@ -1102,7 +1112,7 @@ KJUR.asn1.DEROctetString = function(params) {
     KJUR.asn1.DEROctetString.superclass.constructor.call(this, params);
     this.hT = "04";
 };
-YAHOO.lang.extend(KJUR.asn1.DEROctetString, KJUR.asn1.DERAbstractString);
+extendClass(KJUR.asn1.DEROctetString, KJUR.asn1.DERAbstractString);
 
 // ********************************************************************
 /**
@@ -1118,7 +1128,7 @@ KJUR.asn1.DERNull = function() {
     this.hT = "05";
     this.hTLV = "0500";
 };
-YAHOO.lang.extend(KJUR.asn1.DERNull, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.DERNull, KJUR.asn1.ASN1Object);
 
 // ********************************************************************
 /**
@@ -1127,6 +1137,8 @@ YAHOO.lang.extend(KJUR.asn1.DERNull, KJUR.asn1.ASN1Object);
  * @class class for ASN.1 DER ObjectIdentifier
  * @param {Object} JSON object or string of parameters (ex. {'oid': '2.5.4.5'})
  * @extends KJUR.asn1.ASN1Object
+ * @see oidtohex
+ * 
  * @description
  * <br/>
  * As for argument 'params' for constructor, you can specify one of
@@ -1144,28 +1156,6 @@ YAHOO.lang.extend(KJUR.asn1.DERNull, KJUR.asn1.ASN1Object);
  * new DERObjectIdentifier("SHA1withRSA")
  */
 KJUR.asn1.DERObjectIdentifier = function(params) {
-    var itox = function(i) {
-        var h = i.toString(16);
-        if (h.length == 1) h = '0' + h;
-        return h;
-    };
-    var roidtox = function(roid) {
-        var h = '';
-        var bi = new BigInteger(roid, 10);
-        var b = bi.toString(2);
-        var padLen = 7 - b.length % 7;
-        if (padLen == 7) padLen = 0;
-        var bPad = '';
-        for (var i = 0; i < padLen; i++) bPad += '0';
-        b = bPad + b;
-        for (var i = 0; i < b.length - 1; i += 7) {
-            var b8 = b.substr(i, 7);
-            if (i != b.length - 7) b8 = '1' + b8;
-            h += itox(parseInt(b8, 2));
-        }
-        return h;
-    }
-
     KJUR.asn1.DERObjectIdentifier.superclass.constructor.call(this);
     this.hT = "06";
 
@@ -1194,17 +1184,9 @@ KJUR.asn1.DERObjectIdentifier = function(params) {
      * o.setValueOidString("2.5.4.13");
      */
     this.setValueOidString = function(oidString) {
-        if (! oidString.match(/^[0-9.]+$/)) {
+	var h = oidtohex(oidString);
+	if (h == null)
             throw new Error("malformed oid string: " + oidString);
-        }
-        var h = '';
-        var a = oidString.split('.');
-        var i0 = parseInt(a[0]) * 40 + parseInt(a[1]);
-        h += itox(i0);
-        a.splice(0, 2);
-        for (var i = 0; i < a.length; i++) {
-            h += roidtox(a[i]);
-        }
         this.hTLV = null;
         this.isModified = true;
         this.s = null;
@@ -1260,7 +1242,7 @@ KJUR.asn1.DERObjectIdentifier = function(params) {
 
     if (params !== undefined) this.setByParam(params);
 };
-YAHOO.lang.extend(KJUR.asn1.DERObjectIdentifier, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.DERObjectIdentifier, KJUR.asn1.ASN1Object);
 
 // ********************************************************************
 /**
@@ -1340,7 +1322,7 @@ KJUR.asn1.DEREnumerated = function(params) {
         }
     }
 };
-YAHOO.lang.extend(KJUR.asn1.DEREnumerated, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.DEREnumerated, KJUR.asn1.ASN1Object);
 
 // ********************************************************************
 /**
@@ -1356,7 +1338,7 @@ KJUR.asn1.DERUTF8String = function(params) {
     KJUR.asn1.DERUTF8String.superclass.constructor.call(this, params);
     this.hT = "0c";
 };
-YAHOO.lang.extend(KJUR.asn1.DERUTF8String, KJUR.asn1.DERAbstractString);
+extendClass(KJUR.asn1.DERUTF8String, KJUR.asn1.DERAbstractString);
 
 // ********************************************************************
 /**
@@ -1372,7 +1354,7 @@ KJUR.asn1.DERNumericString = function(params) {
     KJUR.asn1.DERNumericString.superclass.constructor.call(this, params);
     this.hT = "12";
 };
-YAHOO.lang.extend(KJUR.asn1.DERNumericString, KJUR.asn1.DERAbstractString);
+extendClass(KJUR.asn1.DERNumericString, KJUR.asn1.DERAbstractString);
 
 // ********************************************************************
 /**
@@ -1388,7 +1370,7 @@ KJUR.asn1.DERPrintableString = function(params) {
     KJUR.asn1.DERPrintableString.superclass.constructor.call(this, params);
     this.hT = "13";
 };
-YAHOO.lang.extend(KJUR.asn1.DERPrintableString, KJUR.asn1.DERAbstractString);
+extendClass(KJUR.asn1.DERPrintableString, KJUR.asn1.DERAbstractString);
 
 // ********************************************************************
 /**
@@ -1404,7 +1386,7 @@ KJUR.asn1.DERTeletexString = function(params) {
     KJUR.asn1.DERTeletexString.superclass.constructor.call(this, params);
     this.hT = "14";
 };
-YAHOO.lang.extend(KJUR.asn1.DERTeletexString, KJUR.asn1.DERAbstractString);
+extendClass(KJUR.asn1.DERTeletexString, KJUR.asn1.DERAbstractString);
 
 // ********************************************************************
 /**
@@ -1420,7 +1402,7 @@ KJUR.asn1.DERIA5String = function(params) {
     KJUR.asn1.DERIA5String.superclass.constructor.call(this, params);
     this.hT = "16";
 };
-YAHOO.lang.extend(KJUR.asn1.DERIA5String, KJUR.asn1.DERAbstractString);
+extendClass(KJUR.asn1.DERIA5String, KJUR.asn1.DERAbstractString);
 
 // ********************************************************************
 /**
@@ -1437,7 +1419,7 @@ KJUR.asn1.DERVisibleString = function(params) {
     KJUR.asn1.DERIA5String.superclass.constructor.call(this, params);
     this.hT = "1a";
 };
-YAHOO.lang.extend(KJUR.asn1.DERVisibleString, KJUR.asn1.DERAbstractString);
+extendClass(KJUR.asn1.DERVisibleString, KJUR.asn1.DERAbstractString);
 
 // ********************************************************************
 /**
@@ -1454,7 +1436,7 @@ KJUR.asn1.DERBMPString = function(params) {
     KJUR.asn1.DERBMPString.superclass.constructor.call(this, params);
     this.hT = "1e";
 };
-YAHOO.lang.extend(KJUR.asn1.DERBMPString, KJUR.asn1.DERAbstractString);
+extendClass(KJUR.asn1.DERBMPString, KJUR.asn1.DERAbstractString);
 
 // ********************************************************************
 /**
@@ -1525,7 +1507,7 @@ KJUR.asn1.DERUTCTime = function(params) {
         }
     }
 };
-YAHOO.lang.extend(KJUR.asn1.DERUTCTime, KJUR.asn1.DERAbstractTime);
+extendClass(KJUR.asn1.DERUTCTime, KJUR.asn1.DERAbstractTime);
 
 // ********************************************************************
 /**
@@ -1598,7 +1580,7 @@ KJUR.asn1.DERGeneralizedTime = function(params) {
         }
     }
 };
-YAHOO.lang.extend(KJUR.asn1.DERGeneralizedTime, KJUR.asn1.DERAbstractTime);
+extendClass(KJUR.asn1.DERGeneralizedTime, KJUR.asn1.DERAbstractTime);
 
 // ********************************************************************
 /**
@@ -1628,7 +1610,7 @@ KJUR.asn1.DERSequence = function(params) {
         return this.hV;
     };
 };
-YAHOO.lang.extend(KJUR.asn1.DERSequence, KJUR.asn1.DERAbstractStructured);
+extendClass(KJUR.asn1.DERSequence, KJUR.asn1.DERAbstractStructured);
 
 // ********************************************************************
 /**
@@ -1668,7 +1650,7 @@ KJUR.asn1.DERSet = function(params) {
             this.sortFlag = false;
     }
 };
-YAHOO.lang.extend(KJUR.asn1.DERSet, KJUR.asn1.DERAbstractStructured);
+extendClass(KJUR.asn1.DERSet, KJUR.asn1.DERAbstractStructured);
 
 // ********************************************************************
 /**
@@ -1777,4 +1759,4 @@ KJUR.asn1.DERTaggedObject = function(params) {
 
     if (params != undefined) this.setByParam(params);
 };
-YAHOO.lang.extend(KJUR.asn1.DERTaggedObject, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.DERTaggedObject, KJUR.asn1.ASN1Object);

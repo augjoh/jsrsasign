@@ -7,7 +7,6 @@
 <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="qunit.js"></script>
 <link rel="stylesheet" href="qunit.css" type="text/css" media="screen" />
-<!-- crypto-js, yahoo -->
 <!-- tom wo's -->
 <script src="../ext/base64.js"></script>
 <script src="../ext/jsbn.js"></script>
@@ -60,6 +59,16 @@ test("b64utohex", function() {
   equal(b64utohex("MEUCIQD4rwV75OAQfwqRlpBIlTblPdG3XFrxcTRsYHJkzDmemQIgQyV-3QfkSmM1rQf4lFUC3DKIDfTJKjJCR8e4zvIUYf0"), 
     "3045022100f8af057be4e0107f0a919690489536e53dd1b75c5af171346c607264cc399e99022043257edd07e44a6335ad07f8945502dc32880df4c92a324247c7b8cef21461fd", 
     "123");
+});
+
+test("utf8tob64u", function() {
+equal(utf8tob64u("あ"), "44GC", "あ");
+equal(utf8tob64u("aaa"), "YWFh", "aaa");
+});
+
+test("b64utoutf8", function() {
+equal(b64utoutf8("44GC"), "あ", "あ");
+equal(b64utoutf8("YWFh"), "aaa", "aaa");
 });
 
 test("KJUR.lang.String.isInteger", function() {
@@ -282,6 +291,55 @@ test("iptohex", function() {
         '2001:db8::abcd:ef12');
 });
 
+test("ucs2hextoutf8", function() {
+  equal(ucs2hextoutf8('006600fc0072'), 'für', 'für');
+});
+
+test("oidtohex", function() {
+equal(oidtohex("2.16.840.1.101.3.4.2.1"), "608648016503040201", "sha256");
+equal(oidtohex("1.2.840.113549.1.1.5"), "2a864886f70d010105", "SHA1withRSA");
+equal(oidtohex("2.5.4.6"), "550406", "2.5.4.6=550406");
+equal(oidtohex("2.5.12345"), "55e039", "2.5.12345=55e039");
+equal(oidtohex("2.5.b30="), null, "2.5.b30==null");
+});
+
+test("hextooid", function() {
+equal(hextooid("608648016503040201"), "2.16.840.1.101.3.4.2.1", "sha256");
+equal(hextooid("2a864886f70d010105"), "1.2.840.113549.1.1.5", "SHA1withRSA");
+equal(hextooid("=-=-"), null, "=-=- > null");
+});
+
+test("strpad test", function() {
+equal(strpad("1234", 10, "0"), "0000001234", "1234 10 0");
+equal(strpad("1234", 10, " "), "      1234", "1234 10 _");
+equal(strpad("1234", 10), "0000001234", "1234 10");
+equal(strpad("1234", 3), "1234", "1234 3");
+});
+
+test("bitstrtoint test", function() {
+equal(bitstrtoint("0700"), 0, "0700 > 0");
+equal(bitstrtoint("0780"), 1, "0780 > 1");
+equal(bitstrtoint("0680"), 2, "0680 > 2");
+equal(bitstrtoint("06c0"), 3, "06c0 > 3");
+equal(bitstrtoint("04b0"), 11, "04b0 > 11");
+equal(bitstrtoint("03c8"), 25, "03c8 > 25");
+equal(bitstrtoint("02fff8"), 16382, "02ff8 > 16382");
+equal(bitstrtoint("02fffc"), 16383, "02ffc > 16383");
+});
+
+test("inttobitstr test", function() {
+equal(inttobitstr(0), "0700", "0 > 0700");
+equal(inttobitstr(1), "0780", "1 > 0780");
+equal(inttobitstr(2), "0680", "2 > 0680");
+equal(inttobitstr(3), "06c0", "3 > 06c0");
+equal(inttobitstr(11), "04b0", "11 > 04b0");
+equal(inttobitstr(25), "03c8", "25 > 03c8");
+equal(inttobitstr(16382), "02fff8", "16382 > 02fff8");
+equal(inttobitstr(16383), "02fffc", "16383 > 02fffc");
+});
+
+
+
 });
 </script>
   
@@ -293,6 +351,8 @@ test("iptohex", function() {
 <p>
 <a href="../">TOP</a> | 
 <a href="index.html">TEST INDEX</a> | 
+<a href="qunit-do-base64x.html">base64x</a> | 
+<a href="qunit-do-base64x-class.html">base64x-class</a> | 
 <a href="qunit-do-jws-intdate.html">JWS.intDate</a> | 
 </p>
 

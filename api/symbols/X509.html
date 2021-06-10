@@ -235,6 +235,8 @@ ul.inheritsList
 	
 	<li><a href="../symbols/KJUR.asn1.cms.CertificateSet.html">KJUR.asn1.cms.CertificateSet</a></li>
 	
+	<li><a href="../symbols/KJUR.asn1.cms.CMSParser.html">KJUR.asn1.cms.CMSParser</a></li>
+	
 	<li><a href="../symbols/KJUR.asn1.cms.CMSUtil.html">KJUR.asn1.cms.CMSUtil</a></li>
 	
 	<li><a href="../symbols/KJUR.asn1.cms.ContentInfo.html">KJUR.asn1.cms.ContentInfo</a></li>
@@ -381,11 +383,15 @@ ul.inheritsList
 	
 	<li><a href="../symbols/KJUR.asn1.tsp.TimeStampToken.html">KJUR.asn1.tsp.TimeStampToken</a></li>
 	
+	<li><a href="../symbols/KJUR.asn1.tsp.TSPParser.html">KJUR.asn1.tsp.TSPParser</a></li>
+	
 	<li><a href="../symbols/KJUR.asn1.tsp.TSPUtil.html">KJUR.asn1.tsp.TSPUtil</a></li>
 	
 	<li><a href="../symbols/KJUR.asn1.tsp.TSTInfo.html">KJUR.asn1.tsp.TSTInfo</a></li>
 	
 	<li><a href="../symbols/KJUR.asn1.x509.html">KJUR.asn1.x509</a></li>
+	
+	<li><a href="../symbols/KJUR.asn1.x509.AdobeTimeStamp.html">KJUR.asn1.x509.AdobeTimeStamp</a></li>
 	
 	<li><a href="../symbols/KJUR.asn1.x509.AlgorithmIdentifier.html">KJUR.asn1.x509.AlgorithmIdentifier</a></li>
 	
@@ -448,6 +454,8 @@ ul.inheritsList
 	<li><a href="../symbols/KJUR.asn1.x509.RDN.html">KJUR.asn1.x509.RDN</a></li>
 	
 	<li><a href="../symbols/KJUR.asn1.x509.SubjectAltName.html">KJUR.asn1.x509.SubjectAltName</a></li>
+	
+	<li><a href="../symbols/KJUR.asn1.x509.SubjectDirectoryAttributes.html">KJUR.asn1.x509.SubjectDirectoryAttributes</a></li>
 	
 	<li><a href="../symbols/KJUR.asn1.x509.SubjectKeyIdentifier.html">KJUR.asn1.x509.SubjectKeyIdentifier</a></li>
 	
@@ -619,6 +627,28 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/X509.html#dnarraytostr">dnarraytostr</a></b>(aDN)
+								</div>
+								<div class="description">convert array for X500 distinguish name to distinguish name string<br/>
+This method converts from an array representation of 
+X.500 distinguished name to X.500 name string.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/X509.html#findExt">findExt</a></b>(aExt, extname)
+								</div>
+								<div class="description">find extension parameter in array<br/>
+This method returns an extension parameter for
+specified extension name in the array.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/X509.html#getAlgorithmIdentifierName">getAlgorithmIdentifierName</a></b>(hTLV)
 								</div>
 								<div class="description">get algorithm name name of AlgorithmIdentifier ASN.1 structure
@@ -667,6 +697,19 @@ This method will get DistributionPoint parameters.</div>
 								</div>
 								<div class="description">get DistributionPointName ASN.1 structure parameter as JSON object
 This method will get DistributionPointName parameters.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/X509.html#getExtAdobeTimeStamp">getExtAdobeTimeStamp</a></b>(hExtV, critical)
+								</div>
+								<div class="description">parse AdobeTimeStamp extension as JSON object<br/>
+This method parses
+X.509v3 AdobeTimeStamp private extension value defined in the
+<a href="https://www.adobe.com/devnet-docs/acrobatetk/tools/DigSigDC/oids.html">
+Adobe site</a> as JSON object.</div>
 							</td>
 						</tr>
 					
@@ -1233,6 +1276,18 @@ RFC 5280 4.1.2.4</a>.</div>
 						</tr>
 					
 						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/X509.html#getX500NameArray">getX500NameArray</a></b>(h)
+								</div>
+								<div class="description">get X.500 Name ASN.1 structure parameter array<br/>
+This method will get Name parameter defined in
+<a href="https://tools.ietf.org/html/rfc5280#section-4.1.2.4">
+RFC 5280 4.1.2.4</a>.</div>
+							</td>
+						</tr>
+					
+						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
 								<div class="fixedFont">X509.<b><a href="../symbols/X509.html#.hex2attrTypeValue">hex2attrTypeValue</a></b>(hex, idx)
@@ -1292,6 +1347,41 @@ NOTE: <a href="../symbols/X509.html#parseExt">X509#parseExt</a> will called inte
 								<div class="fixedFont"><b><a href="../symbols/X509.html#readCertPEM">readCertPEM</a></b>(sCertPEM)
 								</div>
 								<div class="description">read PEM formatted X.509 certificate from string.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/X509.html#updateAIACAIssuer">updateAIACAIssuer</a></b>(aExt, newURI)
+								</div>
+								<div class="description">update authorityInfoAccess caIssuer in parameter<br/>
+This method updates "caIssuer" accessMethod URI of 
+AuthorityInfoAccess extension
+in the extension parameter array if it exists.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/X509.html#updateAIAOCSP">updateAIAOCSP</a></b>(aExt, newURI)
+								</div>
+								<div class="description">update authorityInfoAccess ocsp in parameter<br/>
+This method updates "ocsp" accessMethod URI of 
+AuthorityInfoAccess extension
+in the extension parameter array if it exists.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/X509.html#updateCDPFullURI">updateCDPFullURI</a></b>(aExt, newURI)
+								</div>
+								<div class="description">update CRLDistributionPoints Full URI in parameter<br/>
+This method updates Full URI of CRLDistributionPoints extension
+in the extension parameter array if it exists.</div>
 							</td>
 						</tr>
 					
@@ -1378,6 +1468,7 @@ X509 class provides following functionality:
   <li>cRLReason - <a href="../symbols/X509.html#getExtCRLReason">X509#getExtCRLReason</a></li>
   <li>ocspNonce - <a href="../symbols/X509.html#getExtOCSPNonce">X509#getExtOCSPNonce</a></li>
   <li>ocspNoCheck - <a href="../symbols/X509.html#getExtOCSPNoCheck">X509#getExtOCSPNoCheck</a></li>
+  <li>adobeTimeStamp - <a href="../symbols/X509.html#getExtAdobeTimeStamp">X509#getExtAdobeTimeStamp</a></li>
   </ul>
 </li>
 <li><b>UTILITIES</b>
@@ -1504,6 +1595,172 @@ X509 class provides following functionality:
 				<div class="sectionTitle">
 					Method Detail
 				</div>
+				
+					<a name="dnarraytostr"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{String}</span>
+					<b>dnarraytostr</b>(aDN)
+					
+					</div>
+					<div class="description">
+						convert array for X500 distinguish name to distinguish name string<br/>
+This method converts from an array representation of 
+X.500 distinguished name to X.500 name string.
+This supports multi-valued RDN.
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">var x = new X509();
+x.dnarraytostr(
+  [[{type:"C",value:"JP",ds:"prn"}],
+  [{type:"O",value:"T1",ds:"prn"}]]) &rarr; "/C=JP/O=T1"
+x.dnarraytostr(
+  [[{type:"C",value:"JP",ds:"prn"}],
+  [{type:"O",value:"T1",ds:"prn"}
+   {type:"CN",value:"Bob",ds:"prn"}]]) &rarr; "/C=JP/O=T1+CN=Bob"</pre>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>aDN</b>
+									
+								</dt>
+								<dd>array for X500 distinguish name</dd>
+							
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Since:</dt>
+								<dd>jsrsasign 10.0.6 x509 2.0.8</dd>
+							</dl>
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> distinguish name</dd>
+							
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="../symbols/X509.html#getX500Name">X509#getX500Name</a></dd>
+							
+								<dd><a href="../symbols/X509.html#getX500NameArray">X509#getX500NameArray</a></dd>
+							
+								<dd><a href="../symbols/KJUR.asn1.x509.X500Name.html">KJUR.asn1.x509.X500Name</a></dd>
+							
+							</dl>
+						
+
+					<hr />
+				
+					<a name="findExt"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>findExt</b>(aExt, extname)
+					
+					</div>
+					<div class="description">
+						find extension parameter in array<br/>
+This method returns an extension parameter for
+specified extension name in the array.
+This method is useful to update extension parameter value.
+When there is no such extension with the extname,
+this returns "null".
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">// (1) 
+x = new X509(CERTPEM);
+params = x.getParam();
+pSKID = x.findExt(params.ext, "subjectKeyIdentifier");
+pSKID.kid = "1234abced..."; // skid in the params is updated.
+  // then params was updated
+
+// (2) another example
+aExt = [
+  {extname:"keyUsage",critical:true,names:["digitalSignature"]},
+  {extname:"basicConstraints",critical:true},
+  {extname:"subjectKeyIdentifier",kid:{hex:"f2eb..."}},
+  {extname:"authorityKeyIdentifier",kid:{hex:"12ab..."}},
+  {extname:"authorityInfoAccess",array:[{ocsp:"http://ocsp.example.com/"}]},
+  {extname:"certificatePolicies",array:[{policyoid:"2.23.140.1.2.1"}]}
+];
+var x = new X509();
+x.findExt(aExt, "authorityKeyInfoAccess").array[0].ocsp = "http://aaa.com";
+pKU = x.findExt(aExt, "keyUsage");
+delete pKU["critical"]; // clear criticla flag
+pKU.names = ["keyCertSign", "cRLSign"];
+  // then aExt was updated</pre>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>aExt</b>
+									
+								</dt>
+								<dd>array of extension parameters</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>extname</b>
+									
+								</dt>
+								<dd>extension name</dd>
+							
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Since:</dt>
+								<dd>jsrsasign 10.0.3 x509 2.0.7</dd>
+							</dl>
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> extension parameter in the array or null</dd>
+							
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="../symbols/X509.html#getParam">X509#getParam</a></dd>
+							
+							</dl>
+						
+
+					<hr />
 				
 					<a name="getAlgorithmIdentifierName"> </a>
 					<div class="fixedFont">
@@ -1640,9 +1897,9 @@ x.getAttrTypeAndValue("30...") &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getX500Name">X509#getX500Name</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getRDN">X509#getRDN</a></dd>
 							
 							</dl>
 						
@@ -1716,9 +1973,9 @@ x.getDisplayText("1e03616161") &rarr {type: 'bmp',  str: 'aaa'}</pre>
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtCertificatePolicies">X509#getExtCertificatePolicies</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getPolicyInformation">X509#getPolicyInformation</a></dd>
 							
 							</dl>
 						
@@ -1785,13 +2042,13 @@ x.getDistributionPoint("30...") &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtCRLDistributionPoints">X509#getExtCRLDistributionPoints</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getDistributionPointName">X509#getDistributionPointName</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getGeneralNames">X509#getGeneralNames</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getGeneralName">X509#getGeneralName</a></dd>
 							
 							</dl>
 						
@@ -1858,13 +2115,101 @@ x.getDistributionPointName("a0...") &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtCRLDistributionPoints">X509#getExtCRLDistributionPoints</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getDistributionPoint">X509#getDistributionPoint</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getGeneralNames">X509#getGeneralNames</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getGeneralName">X509#getGeneralName</a></dd>
+							
+							</dl>
+						
+
+					<hr />
+				
+					<a name="getExtAdobeTimeStamp"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getExtAdobeTimeStamp</b>(hExtV, critical)
+					
+					</div>
+					<div class="description">
+						parse AdobeTimeStamp extension as JSON object<br/>
+This method parses
+X.509v3 AdobeTimeStamp private extension value defined in the
+<a href="https://www.adobe.com/devnet-docs/acrobatetk/tools/DigSigDC/oids.html">
+Adobe site</a> as JSON object.
+This extension provides the URL location for time stamp service.
+<pre>
+adbe- OBJECT IDENTIFIER ::=  { adbe(1.2.840.113583) acrobat(1) security(1) x509Ext(9) 1 }
+ ::= SEQUENCE {
+    version INTEGER  { v1(1) }, -- extension version
+    location GeneralName (In v1 GeneralName can be only uniformResourceIdentifier)
+    requiresAuth        boolean (default false), OPTIONAL }
+</pre>
+<br/>
+Result of this method can be passed to 
+<a href="../symbols/KJUR.asn1.x509.AdobeTimeStamp.html">KJUR.asn1.x509.AdobeTimeStamp</a> constructor.
+<br/>
+NOTE: This extesion doesn't seem to have official name. This may be called as "pdfTimeStamp".
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">x.getExtAdobeTimeStamp(<<extn hex value >>) &rarr;
+{ extname: "adobeTimeStamp", uri: "http://tsa.example.com/" reqauth: true }</pre>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>hExtV</b>
+									
+								</dt>
+								<dd>hexadecimal string of extension value</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Boolean}</span> <b>critical</b>
+									
+								</dt>
+								<dd>flag</dd>
+							
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Since:</dt>
+								<dd>jsrsasign 10.0.1 x509 2.0.5</dd>
+							</dl>
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> JSON object of parsed AdobeTimeStamp extension</dd>
+							
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="../symbols/KJUR.asn1.x509.AdobeTimeStamp.html">KJUR.asn1.x509.AdobeTimeStamp</a></dd>
+							
+								<dd><a href="../symbols/X509.html#getExtParamArray">X509#getExtParamArray</a></dd>
+							
+								<dd><a href="../symbols/X509.html#getExtParam">X509#getExtParam</a></dd>
 							
 							</dl>
 						
@@ -2001,7 +2346,7 @@ x.getExtAuthorityInfoAccesss("306230...", true)</pre>
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.AuthorityInfoAccess.html">KJUR.asn1.x509.AuthorityInfoAccess</a></dd>
 							
 							</dl>
 						
@@ -2101,7 +2446,7 @@ x.getExtAuthorityKeyIdentifier() &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.AuthorityKeyIdentifier.html">KJUR.asn1.x509.AuthorityKeyIdentifier</a></dd>
 							
 							</dl>
 						
@@ -2182,7 +2527,7 @@ x.getExtBasicConstraints() &rarr; {cA:true,pathLen:3,critical:true}</pre>
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.BasicConstraints.html">KJUR.asn1.x509.BasicConstraints</a></dd>
 							
 							</dl>
 						
@@ -2345,15 +2690,15 @@ x.getExtCRLDistributionPoints() &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.CRLDistributionPoints.html">KJUR.asn1.x509.CRLDistributionPoints</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getDistributionPoint">X509#getDistributionPoint</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getDistributionPointName">X509#getDistributionPointName</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getGeneralNames">X509#getGeneralNames</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getGeneralName">X509#getGeneralName</a></dd>
 							
 							</dl>
 						
@@ -2477,9 +2822,9 @@ crl.getExtCRLNumber("02...", false) &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.CRLNumber.html">KJUR.asn1.x509.CRLNumber</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtParamArray">X509#getExtParamArray</a></dd>
 							
 							</dl>
 						
@@ -2563,9 +2908,9 @@ crl.getExtCRLReason("02...", false) &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.CRLReason.html">KJUR.asn1.x509.CRLReason</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtParamArray">X509#getExtParamArray</a></dd>
 							
 							</dl>
 						
@@ -2644,7 +2989,7 @@ x.getExtExtKeyUsage() &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.ExtKeyUsage.html">KJUR.asn1.x509.ExtKeyUsage</a></dd>
 							
 							</dl>
 						
@@ -2850,9 +3195,9 @@ x.getExtIssuerAltName("3026...") &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.IssuerAltName.html">KJUR.asn1.x509.IssuerAltName</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtSubjectAltName">X509#getExtSubjectAltName</a></dd>
 							
 							</dl>
 						
@@ -2948,9 +3293,9 @@ x.getExtKeyUsage("306230...", true)</pre>
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.KeyUsage.html">KJUR.asn1.x509.KeyUsage</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtKeyUsageString">X509#getExtKeyUsageString</a></dd>
 							
 							</dl>
 						
@@ -3022,7 +3367,7 @@ x.getExtKeyUsageBin() &rarr; '101'
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtKeyUsage">X509#getExtKeyUsage</a></dd>
 							
 							</dl>
 						
@@ -3090,7 +3435,7 @@ x.getExtKeyUsageString() &rarr; "digitalSignature,keyEncipherment"</pre>
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtKeyUsage">X509#getExtKeyUsage</a></dd>
 							
 							</dl>
 						
@@ -3168,11 +3513,11 @@ x.getExtOCSPNoCheck(<<extn hex value >>) &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.OCSPNoCheck.html">KJUR.asn1.x509.OCSPNoCheck</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtParamArray">X509#getExtParamArray</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtParam">X509#getExtParam</a></dd>
 							
 							</dl>
 						
@@ -3252,11 +3597,11 @@ x.getExtOCSPNonce(<<extn hex value >>) &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.OCSPNonce.html">KJUR.asn1.x509.OCSPNonce</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtParamArray">X509#getExtParamArray</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtParam">X509#getExtParam</a></dd>
 							
 							</dl>
 						
@@ -3499,9 +3844,9 @@ x.getExtSubjectAltName("3026...") &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.SubjectAltName.html">KJUR.asn1.x509.SubjectAltName</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtIssuerAltName">X509#getExtIssuerAltName</a></dd>
 							
 							</dl>
 						
@@ -3690,7 +4035,14 @@ Result of this method can be passed to
 					
 					<pre class="code">x = new X509();
 x.getGeneralName("860f687474703a2f2f6161612e636f6d2f") 
-&rarr; {uri: "http://aaa.com/"}</pre>
+&rarr; {uri: "http://aaa.com/"}
+x.getGeneralName("a41c30...") &rarr;
+{ dn: {
+    array: [
+      [{type:"C", value:"JP", ds:"prn"}],
+      [{type:"O", value:"T1", ds:"utf8"}]
+    ],
+    str: "/C=JP/O=T1" } }</pre>
 					
 					
 					
@@ -3728,9 +4080,9 @@ x.getGeneralName("860f687474703a2f2f6161612e636f6d2f")
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.GeneralNames.html">KJUR.asn1.x509.GeneralNames</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getGeneralName">X509#getGeneralName</a></dd>
 							
 							</dl>
 						
@@ -3762,7 +4114,15 @@ Result of this method can be passed to
 					
 					<pre class="code">x = new X509();
 x.getGeneralNames("3011860f687474703a2f2f6161612e636f6d2f")
-&rarr; [{uri: "http://aaa.com/"}]</pre>
+&rarr; [{uri: "http://aaa.com/"}]
+
+x.getGeneralNames("301ea41c30...") &rarr;
+[{ dn: {
+    array: [
+      [{type:"C", value:"JP", ds:"prn"}],
+      [{type:"O", value:"T1", ds:"utf8"}]
+    ],
+    str: "/C=JP/O=T1" } }]</pre>
 					
 					
 					
@@ -3800,11 +4160,11 @@ x.getGeneralNames("3011860f687474703a2f2f6161612e636f6d2f")
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.GeneralNames.html">KJUR.asn1.x509.GeneralNames</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/KJUR.asn1.x509.GeneralName.html">KJUR.asn1.x509.GeneralName</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getGeneralNames">X509#getGeneralNames</a></dd>
 							
 							</dl>
 						
@@ -3894,11 +4254,10 @@ signature: 1c1a0697dcd79c9f...</pre>
 					
 					
 					
-					<pre class="code">var x = new X509();
-x.readCertPEM(sCertPEM);
+					<pre class="code">var x = new X509(sCertPEM);
 x.getIssuer() &rarr;
 { array: [[{type:'C',value:'JP',ds:'prn'}],...],
-  str: "30..." }</pre>
+  str: "/C=JP/..." }</pre>
 					
 					
 					
@@ -3921,6 +4280,13 @@ x.getIssuer() &rarr;
 							</dl>
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="../symbols/X509.html#getX500Name">X509#getX500Name</a></dd>
+							
+							</dl>
 						
 
 					<hr />
@@ -3998,6 +4364,13 @@ var dn2 = KJUR.asn1.x509.X500Name.compatToLDAP(dn1); // returns "O=TEST, C=US"</
 							</dl>
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="../symbols/X509.html#getIssuer">X509#getIssuer</a></dd>
+							
+							</dl>
 						
 
 					<hr />
@@ -4114,7 +4487,7 @@ x.getParam() &rarr;
   {extname:"authorityKeyIdentifier",kid:{hex:"12ab..."}},
   {extname:"authorityInfoAccess",array:[{ocsp:"http://ocsp.example.com/"}]},
   {extname:"certificatePolicies",array:[{policyoid:"2.23.140.1.2.1"}]}
- }],
+ ],
  sighex:"0b76...8"
 };</pre>
 					
@@ -4294,9 +4667,9 @@ x.getPolicyQualifierInfo("30...")
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtCertificatePolicies">X509#getExtCertificatePolicies</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getPolicyInformation">X509#getPolicyInformation</a></dd>
 							
 							</dl>
 						
@@ -4698,11 +5071,11 @@ x.getRDN("31...") &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getX500Name">X509#getX500Name</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getRDN">X509#getRDN</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getAttrTypeAndValue">X509#getAttrTypeAndValue</a></dd>
 							
 							</dl>
 						
@@ -4917,11 +5290,10 @@ x.getSignatureValueHex() &rarr "8a4c47913..."</pre>
 					
 					
 					
-					<pre class="code">var x = new X509();
-x.readCertPEM(sCertPEM);
-x.getIssuer() &rarr;
+					<pre class="code">var x = new X509(sCertPEM);
+x.getSubject() &rarr;
 { array: [[{type:'C',value:'JP',ds:'prn'}],...],
-  str: "30..." }</pre>
+  str: "/C=JP/..." }</pre>
 					
 					
 					
@@ -4944,6 +5316,13 @@ x.getIssuer() &rarr;
 							</dl>
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="../symbols/X509.html#getX500Name">X509#getX500Name</a></dd>
+							
+							</dl>
 						
 
 					<hr />
@@ -5022,6 +5401,13 @@ var dn2 = KJUR.asn1.x509.X500Name.compatToLDAP(dn1); // returns "O=TEST, C=US"</
 						
 						
 						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="../symbols/X509.html#getSubject">X509#getSubject</a></dd>
+							
+							</dl>
+						
 
 					<hr />
 				
@@ -5092,11 +5478,11 @@ x.getUserNotice("30...") &rarr; {exptext: {type: 'utf8', str: 'aaa'}}</pre>
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getExtCertificatePolicies">X509#getExtCertificatePolicies</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getPolicyInformation">X509#getPolicyInformation</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getPolicyQualifierInfo">X509#getPolicyQualifierInfo</a></dd>
 							
 							</dl>
 						
@@ -5179,9 +5565,14 @@ RDNSequence ::= SEQUENCE OF RelativeDistinguishedName
 					
 					<pre class="code">x = new X509();
 x.getX500Name("30...") &rarr;
-[[{type:"C",value:"US",ds:"prn"}],
- [{type:"O",value:"Sample Corp.",ds:"utf8"}],
- [{type:"CN",value:"john.smith@example.com",ds:"ia5"}]]</pre>
+{ array: [
+    [{type:"C",value:"US",ds:"prn"}],
+    [{type:"O",value:"Sample Corp.",ds:"utf8"}],
+    [{type:"CN",value:"john.smith@example.com",ds:"ia5"}]
+  ],
+  str: "/C=US/O=Sample Corp./CN=john.smith@example.com",
+  hex: "30..."
+}</pre>
 					
 					
 					
@@ -5219,11 +5610,93 @@ x.getX500Name("30...") &rarr;
 							<dl class="detailList">
 							<dt class="heading">See:</dt>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getX500NameArray">X509#getX500NameArray</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getRDN">X509#getRDN</a></dd>
 							
-								<dd></dd>
+								<dd><a href="../symbols/X509.html#getAttrTypeAndValue">X509#getAttrTypeAndValue</a></dd>
+							
+								<dd><a href="../symbols/KJUR.asn1.x509.X500Name.html">KJUR.asn1.x509.X500Name</a></dd>
+							
+								<dd><a href="../symbols/KJUR.asn1.x509.GeneralName.html">KJUR.asn1.x509.GeneralName</a></dd>
+							
+								<dd><a href="../symbols/KJUR.asn1.x509.GeneralNames.html">KJUR.asn1.x509.GeneralNames</a></dd>
+							
+							</dl>
+						
+
+					<hr />
+				
+					<a name="getX500NameArray"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Array}</span>
+					<b>getX500NameArray</b>(h)
+					
+					</div>
+					<div class="description">
+						get X.500 Name ASN.1 structure parameter array<br/>
+This method will get Name parameter defined in
+<a href="https://tools.ietf.org/html/rfc5280#section-4.1.2.4">
+RFC 5280 4.1.2.4</a>.
+<pre>
+Name ::= CHOICE { -- only one possibility for now --
+  rdnSequence  RDNSequence }
+RDNSequence ::= SEQUENCE OF RelativeDistinguishedName
+</pre>
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">x = new X509();
+x.getX500NameArray("30...") &rarr;
+[[{type:"C",value:"US",ds:"prn"}],
+ [{type:"O",value:"Sample Corp.",ds:"utf8"}],
+ [{type:"CN",value:"john.smith@example.com",ds:"ia5"}]]</pre>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>h</b>
+									
+								</dt>
+								<dd>hexadecimal string of Name</dd>
+							
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Since:</dt>
+								<dd>jsrsasign 10.0.6 x509 2.0.9</dd>
+							</dl>
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Array}</span> array of RDN parameter array</dd>
+							
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="../symbols/X509.html#getX500Name">X509#getX500Name</a></dd>
+							
+								<dd><a href="../symbols/X509.html#getRDN">X509#getRDN</a></dd>
+							
+								<dd><a href="../symbols/X509.html#getAttrTypeAndValue">X509#getAttrTypeAndValue</a></dd>
 							
 							</dl>
 						
@@ -5569,6 +6042,221 @@ x.readCertPEM(sCertPEM); // read certificate</pre>
 
 					<hr />
 				
+					<a name="updateAIACAIssuer"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>updateAIACAIssuer</b>(aExt, newURI)
+					
+					</div>
+					<div class="description">
+						update authorityInfoAccess caIssuer in parameter<br/>
+This method updates "caIssuer" accessMethod URI of 
+AuthorityInfoAccess extension
+in the extension parameter array if it exists.
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">aExt = [
+  {extname:"authorityKeyIdentifier",kid:{hex:"12ab..."}},
+  {extname:"authoriyInfoAccess",
+   array:[
+     {ocsp: "http://ocsp1.example.com"},
+     {caissuer: "http://example.com/a.crt"}
+   ]}
+];
+x = new X509();
+x.updateAIACAIssuer(aExt, "http://example.net/b.crt");</pre>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>aExt</b>
+									
+								</dt>
+								<dd>array of extension parameters</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>newURI</b>
+									
+								</dt>
+								<dd>string of new uri</dd>
+							
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Since:</dt>
+								<dd>jsrsasign 10.0.4 x509 2.0.8</dd>
+							</dl>
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="../symbols/X509.html#findExt">X509#findExt</a></dd>
+							
+								<dd><a href="../symbols/KJUR.asn1.x509.AuthorityInfoAccess.html">KJUR.asn1.x509.AuthorityInfoAccess</a></dd>
+							
+							</dl>
+						
+
+					<hr />
+				
+					<a name="updateAIAOCSP"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>updateAIAOCSP</b>(aExt, newURI)
+					
+					</div>
+					<div class="description">
+						update authorityInfoAccess ocsp in parameter<br/>
+This method updates "ocsp" accessMethod URI of 
+AuthorityInfoAccess extension
+in the extension parameter array if it exists.
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">aExt = [
+  {extname:"authorityKeyIdentifier",kid:{hex:"12ab..."}},
+  {extname:"authoriyInfoAccess",
+   array:[
+     {ocsp: "http://ocsp1.example.com"},
+     {caissuer: "http://example.com/a.crt"}
+   ]}
+];
+x = new X509();
+x.updateAIAOCSP(aExt, "http://ocsp2.example.net");</pre>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>aExt</b>
+									
+								</dt>
+								<dd>array of extension parameters</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>newURI</b>
+									
+								</dt>
+								<dd>string of new uri</dd>
+							
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Since:</dt>
+								<dd>jsrsasign 10.0.4 x509 2.0.8</dd>
+							</dl>
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="../symbols/X509.html#findExt">X509#findExt</a></dd>
+							
+								<dd><a href="../symbols/KJUR.asn1.x509.AuthorityInfoAccess.html">KJUR.asn1.x509.AuthorityInfoAccess</a></dd>
+							
+							</dl>
+						
+
+					<hr />
+				
+					<a name="updateCDPFullURI"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>updateCDPFullURI</b>(aExt, newURI)
+					
+					</div>
+					<div class="description">
+						update CRLDistributionPoints Full URI in parameter<br/>
+This method updates Full URI of CRLDistributionPoints extension
+in the extension parameter array if it exists.
+						
+						
+					</div>
+					
+					
+					
+					<pre class="code">aExt = [
+  {extname:"authorityKeyIdentifier",kid:{hex:"12ab..."}},
+  {extname:"cRLDistributionPoints",
+   array:[{dpname:{full:[{uri:"http://example.com/a.crl"}]}}]},
+];
+x = new X509();
+x.updateCDPFullURI(aExt, "http://crl2.example.new/b.crl");</pre>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Array}</span> <b>aExt</b>
+									
+								</dt>
+								<dd>array of extension parameters</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>newURI</b>
+									
+								</dt>
+								<dd>string of new uri</dd>
+							
+							</dl>
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Since:</dt>
+								<dd>jsrsasign 10.0.4 x509 2.0.8</dd>
+							</dl>
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">See:</dt>
+							
+								<dd><a href="../symbols/X509.html#findExt">X509#findExt</a></dd>
+							
+								<dd><a href="../symbols/KJUR.asn1.x509.CRLDistributionPoints.html">KJUR.asn1.x509.CRLDistributionPoints</a></dd>
+							
+							</dl>
+						
+
+					<hr />
+				
 					<a name="verifySignature"> </a>
 					<div class="fixedFont">
 					
@@ -5642,7 +6330,7 @@ x.verifySignature(pubKey) &rarr; true, false or raising exception</pre>
 		
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
-                        &copy; 2012-2020 Kenji Urushima, All rights reserved<br/>
+                        &copy; 2012-2021 Kenji Urushima, All rights reserved<br/>
 			
 			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 
 		</div>

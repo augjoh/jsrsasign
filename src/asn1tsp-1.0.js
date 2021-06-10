@@ -1,4 +1,4 @@
-/* asn1tsp-2.0.0.js (c) 2014-2020 Kenji Urushima | kjur.github.com/jsrsasign/license
+/* asn1tsp-2.0.4.js (c) 2014-2020 Kenji Urushima | kjur.github.com/jsrsasign/license
  */
 /*
  * asn1tsp.js - ASN.1 DER encoder classes for RFC 3161 Time Stamp Protocol
@@ -16,7 +16,7 @@
  * @fileOverview
  * @name asn1tsp-1.0.js
  * @author Kenji Urushima kenji.urushima@gmail.com
- * @version jsrsasign 10.0.0 asn1tsp 2.0.0 (2020-Sep-22)
+ * @version jsrsasign 10.1.4 asn1tsp 2.0.4 (2020-Nov-22)
  * @since jsrsasign 4.5.1
  * @license <a href="https://kjur.github.io/jsrsasign/license/">MIT License</a>
  */
@@ -99,7 +99,7 @@ if (typeof KJUR.asn1.tsp == "undefined" || !KJUR.asn1.tsp) KJUR.asn1.tsp = {};
  *     content: {
  *       policy: '1.2.3.4.5',
  *       messageImprint: { hashAlg: 'sha1', hashValue: 'a1a2a3a4' },
- *       serialNumber: {'int': 3},
+ *       serial: {'int': 3},
  *       genTime: {str: '20131231235959.123Z', millis: true},
  *       accuracy: { millis: 500 },
  *       ordering: true,
@@ -142,7 +142,7 @@ KJUR.asn1.tsp.TimeStampToken = function(params) {
 
     if (params != undefined) this.setByParam(params);
 };
-YAHOO.lang.extend(KJUR.asn1.tsp.TimeStampToken, KJUR.asn1.cms.SignedData);
+extendClass(KJUR.asn1.tsp.TimeStampToken, KJUR.asn1.cms.SignedData);
 
 /**
  * class for TSP TSTInfo ASN.1 object
@@ -177,6 +177,7 @@ YAHOO.lang.extend(KJUR.asn1.tsp.TimeStampToken, KJUR.asn1.cms.SignedData);
  * o = new KJUR.asn1.tsp.TSTInfo({
  *     policy:    '1.2.3.4.5',
  *     messageImprint: {alg: 'sha256', hash: '1abc...'},
+ *     serial:    {int: 3},
  *     genTime:   {millis: true},         // OPTION
  *     accuracy:  {micros: 500},          // OPTION
  *     ordering:  true,                   // OPITON
@@ -185,7 +186,8 @@ YAHOO.lang.extend(KJUR.asn1.tsp.TimeStampToken, KJUR.asn1.cms.SignedData);
  * });
  */
 KJUR.asn1.tsp.TSTInfo = function(params) {
-    var _KJUR = KJUR,
+    var _Error = Error,
+	_KJUR = KJUR,
 	_KJUR_asn1 = _KJUR.asn1,
 	_DERSequence = _KJUR_asn1.DERSequence,
 	_DERInteger = _KJUR_asn1.DERInteger,
@@ -205,7 +207,7 @@ KJUR.asn1.tsp.TSTInfo = function(params) {
     this.dVersion = new _DERInteger({'int': 1});
     this.dPolicy = null;
     this.dMessageImprint = null;
-    this.dSerialNumber = null;
+    this.dSerial = null;
     this.dGenTime = null;
     this.dAccuracy = null;
     this.dOrdering = null;
@@ -215,19 +217,19 @@ KJUR.asn1.tsp.TSTInfo = function(params) {
     this.getEncodedHex = function() {
         var a = [this.dVersion];
 
-        if (this.dPolicy == null) throw "policy shall be specified.";
+        if (this.dPolicy == null) throw new Error("policy shall be specified.");
         a.push(this.dPolicy);
 
         if (this.dMessageImprint == null)
-            throw "messageImprint shall be specified.";
+            throw new Error("messageImprint shall be specified.");
         a.push(this.dMessageImprint);
 
-        if (this.dSerialNumber == null)
-            throw "serialNumber shall be specified.";
-        a.push(this.dSerialNumber);
+        if (this.dSerial == null)
+            throw new Error("serialNumber shall be specified.");
+        a.push(this.dSerial);
 
         if (this.dGenTime == null)
-            throw "genTime shall be specified.";
+            throw new Error("genTime shall be specified.");
         a.push(this.dGenTime);
 
         if (this.dAccuracy != null) a.push(this.dAccuracy);
@@ -249,8 +251,8 @@ KJUR.asn1.tsp.TSTInfo = function(params) {
         if (params.messageImprint !== undefined) {
             this.dMessageImprint = new _MessageImprint(params.messageImprint);
         }
-        if (params.serialNumber !== undefined) {
-            this.dSerialNumber = new _DERInteger(params.serialNumber);
+        if (params.serial !== undefined) {
+            this.dSerial = new _DERInteger(params.serial);
         }
         if (params.genTime !== undefined) {
             this.dGenTime = new _DERGeneralizedTime(params.genTime);
@@ -274,7 +276,7 @@ KJUR.asn1.tsp.TSTInfo = function(params) {
         }
     }
 };
-YAHOO.lang.extend(KJUR.asn1.tsp.TSTInfo, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.tsp.TSTInfo, KJUR.asn1.ASN1Object);
 
 /**
  * class for TSP Accuracy ASN.1 object
@@ -332,7 +334,7 @@ KJUR.asn1.tsp.Accuracy = function(params) {
 
     if (params != undefined) this.setByParam(params);
 };
-YAHOO.lang.extend(KJUR.asn1.tsp.Accuracy, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.tsp.Accuracy, KJUR.asn1.ASN1Object);
 
 /**
  * class for TSP MessageImprint ASN.1 object
@@ -387,7 +389,7 @@ KJUR.asn1.tsp.MessageImprint = function(params) {
 
     if (params !== undefined) this.setByParam(params);
 };
-YAHOO.lang.extend(KJUR.asn1.tsp.MessageImprint, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.tsp.MessageImprint, KJUR.asn1.ASN1Object);
 
 /**
  * class for TSP TimeStampReq ASN.1 object<br/>
@@ -455,7 +457,7 @@ KJUR.asn1.tsp.TimeStampReq = function(params) {
 
     if (params != undefined) this.setByParam(params);
 };
-YAHOO.lang.extend(KJUR.asn1.tsp.TimeStampReq, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.tsp.TimeStampReq, KJUR.asn1.ASN1Object);
 
 /**
  * class for TSP TimeStampResp ASN.1 object
@@ -503,7 +505,7 @@ KJUR.asn1.tsp.TimeStampResp = function(params) {
 
     if (params != undefined) this.setByParam(params);
 };
-YAHOO.lang.extend(KJUR.asn1.tsp.TimeStampResp, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.tsp.TimeStampResp, KJUR.asn1.ASN1Object);
 
 // --- BEGIN OF RFC 2510 CMP -----------------------------------------------
 
@@ -514,7 +516,16 @@ YAHOO.lang.extend(KJUR.asn1.tsp.TimeStampResp, KJUR.asn1.ASN1Object);
  * @param {Array} params associative array of parameters
  * @extends KJUR.asn1.ASN1Object
  * @since jsrsasign 4.6.0 asn1tsp 1.0.0
+ * @see KJUR.asn1.tsp.PKIStatus
+ * @see KJUR.asn1.tsp.PKIFreeText
+ * @see KJUR.asn1.tsp.PKIFailureInfo
+ * @see KJUR.asn1.tsp.TSPParser#getPKIStatusInfo
+ *
  * @description
+ * This class provides ASN.1 PKIStatusInfo encoder
+ * defined in 
+ * <a href="https://tools.ietf.org/html/rfc3161#section-2.4.2">
+ * RFC 3161 section 2.4.2</a>.
  * <pre>
  * PKIStatusInfo ::= SEQUENCE {
  *    status                  PKIStatus,
@@ -527,8 +538,8 @@ YAHOO.lang.extend(KJUR.asn1.tsp.TimeStampResp, KJUR.asn1.ASN1Object);
  * new KJUR.asn1.tsp.PKIStatusInfo({status: "granted"})
  * new KJUR.asn1.tsp.PKIStatusInfo({
  *   status: 2, // rejection
- *   statusString: ["unsupported algorithm"], // OPTION
- *   failInfo: 'badAlg' // OPTION
+ *   statusstr: ["unsupported algorithm"], // OPTION
+ *   failinfo: 'badAlg' // OPTION
  * })
  */
 KJUR.asn1.tsp.PKIStatusInfo = function(params) {
@@ -570,7 +581,7 @@ KJUR.asn1.tsp.PKIStatusInfo = function(params) {
 
     if (params != undefined) this.setByParam(params);
 };
-YAHOO.lang.extend(KJUR.asn1.tsp.PKIStatusInfo, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.tsp.PKIStatusInfo, KJUR.asn1.ASN1Object);
 
 /**
  * class for TSP PKIStatus ASN.1 object
@@ -636,7 +647,7 @@ KJUR.asn1.tsp.PKIStatus = function(params) {
 
     if (params != undefined) this.setByParam(params);
 };
-YAHOO.lang.extend(KJUR.asn1.tsp.PKIStatus, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.tsp.PKIStatus, KJUR.asn1.ASN1Object);
 
 /**
  * class for TSP PKIFreeText ASN.1 object
@@ -687,7 +698,7 @@ KJUR.asn1.tsp.PKIFreeText = function(params) {
 
     if (params != undefined) this.setByParam(params);
 };
-YAHOO.lang.extend(KJUR.asn1.tsp.PKIFreeText, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.tsp.PKIFreeText, KJUR.asn1.ASN1Object);
 
 /**
  * class for TSP PKIFailureInfo ASN.1 object
@@ -756,7 +767,7 @@ KJUR.asn1.tsp.PKIFailureInfo = function(params) {
 
     if (params != undefined) this.setByParam(params);
 };
-YAHOO.lang.extend(KJUR.asn1.tsp.PKIFailureInfo, KJUR.asn1.ASN1Object);
+extendClass(KJUR.asn1.tsp.PKIFailureInfo, KJUR.asn1.ASN1Object);
 
 // --- END OF RFC 2510 CMP -------------------------------------------
 
@@ -806,7 +817,7 @@ KJUR.asn1.tsp.SimpleTSAAdapter = function(params) {
             {alg: hashAlg, hash: hashHex};
 
         // serial
-        this.params.econtent.content.serialNumber =
+        this.params.econtent.content.serial =
 	    {'int': this.serial++};
 
         // nonce
@@ -821,7 +832,7 @@ KJUR.asn1.tsp.SimpleTSAAdapter = function(params) {
 
     if (params !== undefined) this.params = params;
 };
-YAHOO.lang.extend(KJUR.asn1.tsp.SimpleTSAAdapter,
+extendClass(KJUR.asn1.tsp.SimpleTSAAdapter,
                   KJUR.asn1.tsp.AbstractTSAAdapter);
 
 /**
@@ -866,7 +877,7 @@ KJUR.asn1.tsp.FixedTSAAdapter = function(params) {
 
     if (params !== undefined) this.params = params;
 };
-YAHOO.lang.extend(KJUR.asn1.tsp.FixedTSAAdapter,
+extendClass(KJUR.asn1.tsp.FixedTSAAdapter,
                   KJUR.asn1.tsp.AbstractTSAAdapter);
 
 // --- TSP utilities -------------------------------------------------
@@ -992,3 +1003,468 @@ KJUR.asn1.tsp.TSPUtil.parseMessageImprint = function(miHex) {
     return json;
 };
 
+/**
+ * class for parsing RFC 3161 TimeStamp protocol data<br/>
+ * @name KJUR.asn1.tsp.TSPParser
+ * @class RFC 3161 TimeStamp protocol parser class
+ * @since jsrsasign 10.1.0 asn1tsp 2.0.1
+ *
+ * @description
+ * This is an ASN.1 parser for 
+ * <a href="https://tools.ietf.org/html/rfc3161">RFC 3161</a>.
+ */
+KJUR.asn1.tsp.TSPParser = function() {
+    var _Error = Error,
+	_X509 = X509,
+	_x509obj = new _X509(),
+	_ASN1HEX = ASN1HEX,
+	_getV = _ASN1HEX.getV,
+	_getTLV = _ASN1HEX.getTLV,
+	_getIdxbyList = _ASN1HEX.getIdxbyList,
+	_getTLVbyListEx = _ASN1HEX.getTLVbyListEx,
+	_getChildIdx = _ASN1HEX.getChildIdx;
+    var _aSTATUSSTR = [
+	"granted", "grantedWithMods", "rejection", "waiting",
+	"revocationWarning", "revocationNotification" ];
+    var _pFAILUREINFO = {
+	0: "badAlg", 2: "badRequest", 5: "badDataFormat",
+	14: "timeNotAvailable", 15: "unacceptedPolicy",
+	16: "unacceptedExtension", 17: "addInfoNotAvailable",
+	25: "systemFailure"
+    };
+    
+    /**
+     * parse ASN.1 TimeStampResp<br/>
+     * @name getResponse
+     * @memberOf KJUR.asn1.tsp.TSPParser#
+     * @function
+     * @param {String} h hexadecimal string of ASN.1 TimeStampResp
+     * @return {Array} JSON object of TimeStampResp parameter
+     * @see KJUR.asn1.tsp.TimeStampResp
+     * @see KJUR.asn1.tsp.TimeStampToken
+     * @see KJUR.asn1.cms.CMSParser#getCMSSignedData
+     *
+     * @description
+     * This method parses ASN.1 TimeStampRsp defined in RFC 3161.
+     * <pre>
+     * TimeStampResp ::= SEQUENCE {
+     *   status          PKIStatusInfo,
+     *   timeStampToken  TimeStampToken  OPTIONAL }
+     * </pre>
+     * When "h" is a TSP error response,
+     * returned parameter contains "statusinfo" only.
+     *
+     * @example
+     * parser = new KJUR.asn1.tsp.TSPParser();
+     * parser.getResponse("30...") &rarr;
+     * { 
+     *   statusinfo: 'granted',
+     *   ... // almost the same as CMS SignedData parameters
+     *   econtent: {
+     *     type: "tstinfo",
+     *     content: { // TSTInfo parameter
+     *       policy: '1.2.3.4.5',
+     *       messageImprint: {alg: 'sha256', hash: 'a1a2a3a4...'},
+     *       serial: {'int': 3},
+     *       genTime: {str: '20131231235959.123Z'},
+     *       accuracy: {millis: 500},
+     *       ordering: true,
+     *       nonce: {int: 3}
+     *     }
+     *   },
+     *   ...
+     * }
+     */
+    this.getResponse = function(h) {
+	var aIdx = _getChildIdx(h, 0);
+	
+	if (aIdx.length == 1) {
+	    return this.getPKIStatusInfo(_getTLV(h, aIdx[0]));
+	} else if (aIdx.length > 1) {
+	    var pPKIStatusInfo = this.getPKIStatusInfo(_getTLV(h, aIdx[0]));
+	    var hTST = _getTLV(h, aIdx[1]);
+	    var pResult = this.getToken(hTST);
+	    pResult.statusinfo = pPKIStatusInfo;
+	    return pResult;
+	}
+    };
+
+    /**
+     * parse ASN.1 TimeStampToken<br/>
+     * @name getToken
+     * @memberOf KJUR.asn1.tsp.TSPParser#
+     * @function
+     * @param {String} h hexadecimal string of ASN.1 TimeStampToken
+     * @return {Array} JSON object of TimeStampToken parameter
+     * @see KJUR.asn1.tsp.TimeStampToken
+     * @see KJUR.asn1.cms.CMSParser#getCMSSignedData
+     * @see KJUR.asn1.tsp.TSPParser#setTSTInfo
+     *
+     * @description
+     * This method parses ASN.1 TimeStampRsp defined in RFC 3161.
+     * This method will parse "h" as CMS SigneData by
+     * {@link KJUR.asn1.cms.CMSParser#getCMSSignedData}, then
+     * parse and modify "econtent.content" parameter by
+     * {@link KJUR.asn1.tsp.TSPParser#setTSTInfo} method.
+     *
+     * @example
+     * parser = new KJUR.asn1.tsp.TSPParser();
+     * parser.getToken("30...") &rarr;
+     * { 
+     *   ... // almost the same as CMS SignedData parameters
+     *   econtent: {
+     *     type: "tstinfo",
+     *     content: { // TSTInfo parameter
+     *       policy: '1.2.3.4.5',
+     *       messageImprint: {alg: 'sha256', hash: 'a1a2a3a4...'},
+     *       serial: {'int': 3},
+     *       genTime: {str: '20131231235959.123Z'},
+     *       accuracy: {millis: 500},
+     *       ordering: true,
+     *       nonce: {int: 3}
+     *     }
+     *   },
+     *   ...
+     * }
+     */
+    this.getToken = function(h) {
+	var _CMSParser = new KJUR.asn1.cms.CMSParser;
+	var p = _CMSParser.getCMSSignedData(h);
+	this.setTSTInfo(p);
+	return p;
+    };
+
+    /**
+     * set ASN.1 TSTInfo parameter to CMS SignedData parameter<br/>
+     * @name setTSTInfo
+     * @memberOf KJUR.asn1.tsp.TSPParser#
+     * @function
+     * @param {Array} pCMSSignedData JSON object of CMS SignedData parameter
+     * @see KJUR.asn1.tsp.TimeStampToken
+     * @see KJUR.asn1.cms.CMSParser#getCMSSignedData
+     *
+     * @description
+     * This method modifies "econtent.content" of CMS SignedData parameter
+     * to parsed TSTInfo.
+     * <pre>
+     *
+     * @example
+     * parser = new KJUR.asn1.tsp.TSPParser();
+     * pCMSSignedData = { 
+     *   ... // almost the same as CMS SignedData parameters
+     *   econtent: {
+     *     type: "tstinfo",
+     *     content: { hex: "30..." }
+     *   },
+     *   ...
+     * };
+     * parser.setTSTInfo(pCMSSignedData);
+     * pCMSSignedData &rarr; { 
+     *   ... // almost the same as CMS SignedData parameters
+     *   econtent: {
+     *     type: "tstinfo",
+     *     content: { // TSTInfo parameter
+     *       policy: '1.2.3.4.5',
+     *       messageImprint: {alg: 'sha256', hash: 'a1a2a3a4...'},
+     *       serial: {int: 3},
+     *       genTime: {str: '20131231235959.123Z'},
+     *       accuracy: {millis: 500},
+     *       ordering: true,
+     *       nonce: {int: 3}
+     *     }
+     *   },
+     *   ...
+     * };
+     */
+    this.setTSTInfo = function(pCMSSignedData) {
+	var pEContent = pCMSSignedData.econtent;
+	if (pEContent.type == "tstinfo") {
+	    var hContent = pEContent.content.hex;
+	    var pTSTInfo = this.getTSTInfo(hContent);
+	    //pTSTInfo.hex_ = hContent;
+	    pEContent.content = pTSTInfo;
+	}
+    };
+
+    /**
+     * parse ASN.1 TSTInfo<br/>
+     * @name getTSTInfo
+     * @memberOf KJUR.asn1.tsp.TSPParser#
+     * @function
+     * @param {String} h hexadecimal string of ASN.1 TSTInfo
+     * @return {Array} JSON object of TSTInfo parameter
+     * @see KJUR.asn1.tsp.TSTInfo
+     *
+     * @description
+     * This method parses ASN.1 TSTInfo defined in RFC 3161.
+     * <pre>
+     * TSTInfo ::= SEQUENCE  {
+     *    version          INTEGER  { v1(1) },
+     *    policy           TSAPolicyId,
+     *    messageImprint   MessageImprint,
+     *    serialNumber     INTEGER,
+     *    genTime          GeneralizedTime,
+     *    accuracy         Accuracy                 OPTIONAL,
+     *    ordering         BOOLEAN             DEFAULT FALSE,
+     *    nonce            INTEGER                  OPTIONAL,
+     *    tsa              [0] GeneralName          OPTIONAL,
+     *    extensions       [1] IMPLICIT Extensions  OPTIONAL }
+     * </pre>
+     *
+     * @example
+     * parser = new KJUR.asn1.tsp.TSPParser();
+     * parser.getTSTInfo("30...") &rarr;
+     * {
+     *   policy: '1.2.3.4.5',
+     *   messageImprint: {alg: 'sha256', hash: 'a1a2a3a4...'},
+     *   serial: {'int': 3},
+     *   genTime: {str: '20131231235959.123Z'},
+     *   accuracy: {millis: 500},
+     *   ordering: true,
+     *   nonce: {int: 3}
+     * }
+     */
+    this.getTSTInfo = function(h) {
+	var pResult = {};
+	var aIdx = _getChildIdx(h, 0);
+
+	var hPolicy = _getV(h, aIdx[1]);
+	pResult.policy = hextooid(hPolicy);
+
+	var hMessageImprint = _getTLV(h, aIdx[2]);
+	pResult.messageImprint = this.getMessageImprint(hMessageImprint);
+
+	var hSerial = _getV(h, aIdx[3]);
+	pResult.serial = {hex: hSerial};
+
+	var hGenTime = _getV(h, aIdx[4]);
+	pResult.genTime = {str: hextoutf8(hGenTime)};
+
+	var offset = 0;
+
+	if (aIdx.length > 5 && h.substr(aIdx[5], 2) == "30") {
+	    var hAccuracy = _getTLV(h, aIdx[5]);
+	    pResult.accuracy = this.getAccuracy(hAccuracy);
+	    offset++;
+	}
+
+	if (aIdx.length > 5 + offset && 
+	    h.substr(aIdx[5 + offset], 2) == "01") {
+	    var hOrdering = _getV(h, aIdx[5 + offset]);
+	    if (hOrdering == "ff") pResult.ordering = true;
+	    offset++;
+	}
+
+	if (aIdx.length > 5 + offset &&
+	    h.substr(aIdx[5 + offset], 2) == "02") {
+	    var hNonce = _getV(h, aIdx[5 + offset]);
+	    pResult.nonce = {hex: hNonce};
+	    offset++;
+	}
+
+	if (aIdx.length > 5 + offset &&
+	    h.substr(aIdx[5 + offset], 2) == "a0") {
+	    var hGeneralNames = _getTLV(h, aIdx[5 + offset]);
+	    hGeneralNames = "30" + hGeneralNames.substr(2);
+	    pGeneralNames = _x509obj.getGeneralNames(hGeneralNames);
+	    var pName = pGeneralNames[0].dn;
+	    pResult.tsa = pName;
+	    offset++;
+	}
+
+	if (aIdx.length > 5 + offset &&
+	    h.substr(aIdx[5 + offset], 2) == "a1") {
+	    var hExt = _getTLV(h, aIdx[5 + offset]);
+	    hExt = "30" + hExt.substr(2);
+	    var aExt = _x509obj.getExtParamArray(hExt);
+	    pResult.ext = aExt;
+	    offset++;
+	}
+
+	return pResult;
+    };
+
+    /**
+     * parse ASN.1 Accuracy<br/>
+     * @name getAccuracy
+     * @memberOf KJUR.asn1.tsp.TSPParser#
+     * @function
+     * @param {String} h hexadecimal string of ASN.1 Accuracy
+     * @return {Array} JSON object of Accuracy parameter
+     * @see KJUR.asn1.tsp.Accuracy
+     *
+     * @description
+     * This method parses ASN.1 Accuracy defined in RFC 3161.
+     * <pre>
+     * Accuracy ::= SEQUENCE {
+     *    seconds        INTEGER              OPTIONAL,
+     *    millis     [0] INTEGER  (1..999)    OPTIONAL,
+     *    micros     [1] INTEGER  (1..999)    OPTIONAL  }
+     * </pre>
+     *
+     * @example
+     * parser = new KJUR.asn1.tsp.TSPParser();
+     * parser.getAccuracy("30...") &rarr; {millis: 500}
+     */
+    this.getAccuracy = function(h) {
+	var pResult = {};
+
+	var aIdx = _getChildIdx(h, 0);
+
+	for (var i = 0; i < aIdx.length; i++) {
+	    var tag = h.substr(aIdx[i], 2);
+	    var hV = _getV(h, aIdx[i]);
+	    var iV = parseInt(hV, 16);
+
+	    if (tag == "02") {
+		pResult.seconds = iV;
+	    } else if (tag == "80") {
+		pResult.millis = iV;
+	    } else if (tag == "81") {
+		pResult.micros = iV;
+	    }
+	}
+
+	return pResult;
+    };
+
+    /**
+     * parse ASN.1 MessageImprint<br/>
+     * @name getMessageImprint
+     * @memberOf KJUR.asn1.tsp.TSPParser#
+     * @function
+     * @param {String} h hexadecimal string of ASN.1 MessageImprint
+     * @return {Array} JSON object of MessageImprint parameter
+     * @see KJUR.asn1.tsp.MessageImprint
+     *
+     * @description
+     * This method parses ASN.1 MessageImprint defined in RFC 3161.
+     *
+     * @example
+     * parser = new KJUR.asn1.tsp.TSPParser();
+     * parser.getMessageImprint("30...") &rarr; 
+     * { alg: "sha256", hash: "12ab..." }
+     */
+    this.getMessageImprint = function(h) {
+	if (h.substr(0, 2) != "30")
+            throw new Error("head of messageImprint hex shall be x30");
+
+	var json = {};
+	var idxList = _getChildIdx(h, 0);
+	var hashAlgOidIdx = _getIdxbyList(h, 0, [0, 0]);
+	var hashAlgHex = _getV(h, hashAlgOidIdx);
+	var hashAlgOid = _ASN1HEX.hextooidstr(hashAlgHex);
+	var hashAlgName = KJUR.asn1.x509.OID.oid2name(hashAlgOid);
+	if (hashAlgName == '')
+            throw new Error("hashAlg name undefined: " + hashAlgOid);
+	var hashAlg = hashAlgName;
+	var hashValueIdx = _getIdxbyList(h, 0, [1]);
+	
+	json.alg = hashAlg;
+	json.hash = _getV(h, hashValueIdx); 
+
+	return json;
+    };
+
+    /**
+     * parse ASN.1 PKIStatusInfo<br/>
+     * @name getPKIStatusInfo
+     * @memberOf KJUR.asn1.tsp.TSPParser#
+     * @function
+     * @param {String} h hexadecimal string of ASN.1 PKIStatusInfo
+     * @return {Array} JSON object of PKIStatusInfo parameter
+     * @see KJUR.asn1.tsp.PKIStatusInfo
+     *
+     * @description
+     * This method parses ASN.1 PKIStatusInfo defined in RFC 3161.
+     *
+     * @example
+     * parser = new KJUR.asn1.tsp.TSPParser();
+     * parser.getPKIStatusInfo("30...") &rarr; 
+     * { status: "rejection",
+     *   statusstr: ["unsupported algorithm"],
+     *   failinfo: "badAlg" }
+     */
+    this.getPKIStatusInfo = function(h) {
+	var pResult = {};
+	var aIdx = _getChildIdx(h, 0);
+	var offset = 0;
+
+	try {
+	    var hStatus = _getV(h, aIdx[0]);
+	    var iStatus = parseInt(hStatus, 16);
+	    pResult.status = _aSTATUSSTR[iStatus];
+	} catch(ex) {};
+
+	if (aIdx.length > 1 && h.substr(aIdx[1], 2) == "30") {
+	    var hPKIFreeText = _getTLV(h, aIdx[1]);
+	    pResult.statusstr = 
+		this.getPKIFreeText(hPKIFreeText);
+	    offset++;
+	}
+
+	if (aIdx.length > offset &&
+	    h.substr(aIdx[1 + offset], 2) == "03") {
+	    var hPKIFailureInfo = _getTLV(h, aIdx[1 + offset]);
+	    pResult.failinfo = 
+		this.getPKIFailureInfo(hPKIFailureInfo);
+	}
+
+	return pResult;
+    };
+
+    /**
+     * parse ASN.1 PKIFreeText<br/>
+     * @name getPKIFreeText
+     * @memberOf KJUR.asn1.tsp.TSPParser#
+     * @function
+     * @param {String} h hexadecimal string of ASN.1 PKIFreeText
+     * @return {Array} array of string
+     * @since jsrsasign 10.1.3 asn1tsp 2.0.3
+     * @see KJUR.asn1.tsp.PKIFreeText
+     *
+     * @description
+     * This method parses ASN.1 PKIFreeText defined in RFC 3161.
+     *
+     * @example
+     * parser = new KJUR.asn1.tsp.TSPParser();
+     * parser.getPKIFreeText("300a0c036161610c03616161") &rarr; 
+     * ["aaa", "aaa"]
+     */
+    this.getPKIFreeText = function(h) {
+	var aResult = [];
+	var aIdx = _getChildIdx(h, 0);
+	for (var i = 0; i < aIdx.length; i++) {
+	    aResult.push(_ASN1HEX.getString(h, aIdx[i]));
+	}
+	return aResult;
+    };
+
+    /**
+     * parse ASN.1 PKIFailureInfo<br/>
+     * @name getPKIFailureInfo
+     * @memberOf KJUR.asn1.tsp.TSPParser#
+     * @function
+     * @param {String} h hexadecimal string of ASN.1 PKIFailureInfo
+     * @return {Object} failureInfo string or number
+     * @since jsrsasign 10.1.3 asn1tsp 2.0.3
+     * @see KJUR.asn1.tsp.PKIFailureInfo
+     *
+     * @description
+     * This method parses ASN.1 PKIFailureInfo defined in RFC 3161.
+     *
+     * @example
+     * parser = new KJUR.asn1.tsp.TSPParser();
+     * parser.getPKIFailureInfo("03020700") &rarr; "badAlg"
+     * parser.getPKIFailureInfo("03020780") &rarr; 1
+     * parser.getPKIFailureInfo("030203c8") &rarr; "systemFailure"
+     */
+    this.getPKIFailureInfo = function(h) {
+	var n = _ASN1HEX.getInt(h, 0);
+	if (_pFAILUREINFO[n] != undefined) {
+	    return _pFAILUREINFO[n];
+	} else {
+	    return n;
+	}
+    };
+};

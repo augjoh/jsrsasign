@@ -24,7 +24,7 @@
 <script src="../ext/cj/hmac_min.js"></script>
 <script src="../ext/cj/pbkdf2_min.js"></script>
 
-<script src="../ext/yahoo.js"></script>
+
 <script src="../ext/jsbn.js"></script>
 <script src="../ext/jsbn2.js"></script>
 <script src="../ext/prng4.js"></script>
@@ -476,13 +476,25 @@ x2.getExtAuthorityKeyIdentifier(),
 "for DigiCert EV root");
 
 var x = new X509();
-deepEqual(
-x.getExtAuthorityKeyIdentifier("3039801427e00502504b088259f76ece524799e2246e30eba11ea41c301a310b3009060355040613024a50310b3009060355040a0c025431820101", true),
-{extname:"authorityKeyIdentifier",
+var hIn3 = "3039801427e00502504b088259f76ece524799e2246e30eba11ea41c301a310b3009060355040613024a50310b3009060355040a0c025431820101";
+var pExp3 = {
+ extname:"authorityKeyIdentifier",
  kid: {hex: "27e00502504b088259f76ece524799e2246e30eb"},
- issuer: {hex: "301a310b3009060355040613024a50310b3009060355040a0c025431"},
+ issuer: {
+  array: [
+   [{type:"C",value:"JP",ds:"prn"}],
+   [{type:"O",value:"T1",ds:"utf8"}]
+  ],
+  str: "/C=JP/O=T1"
+ },
  sn: {hex: "01"},
- critical:true},
+ critical:true
+};
+
+
+deepEqual(
+x.getExtAuthorityKeyIdentifier(hIn3, true),
+pExp3,
 "hoge");
 });
 
@@ -827,18 +839,44 @@ x.getDistributionPointName("a013a011860f687474703a2f2f6161612e636f6d2f"),
 
 test("getGeneralNames test" , function() {
 var x = new X509();
-deepEqual(
-x.getGeneralNames("a011860f687474703a2f2f6161612e636f6d2f"),
-[{uri: "http://aaa.com/"}],
-"[{uri: http://aaa.com/}]");
+
+var hIn1 = "a011860f687474703a2f2f6161612e636f6d2f";
+var pExpect1 = [{uri: "http://aaa.com/"}];
+deepEqual(x.getGeneralNames(hIn1), pExpect1, "[{uri}]");
+
+var hIn2 = "301ea41c301a310b3009060355040613024a50310b3009060355040a0c025431";
+var pExpect2 = [{
+  dn: {
+    array: [
+      [{type:"C", value:"JP", ds:"prn"}],
+      [{type:"O", value:"T1", ds:"utf8"}]
+    ],
+    str: "/C=JP/O=T1"
+  }
+}];
+deepEqual(x.getGeneralNames(hIn2), pExpect2, "[{dn}]");
+
 });
 
 test("getGeneralName test" , function() {
 var x = new X509();
-deepEqual(
-x.getGeneralName("860f687474703a2f2f6161612e636f6d2f"),
-{uri: "http://aaa.com/"},
-"{uri: http://aaa.com/}");
+
+var hIn1 = "860f687474703a2f2f6161612e636f6d2f";
+var pExpect1 = {uri: "http://aaa.com/"};
+deepEqual(x.getGeneralName(hIn1), pExpect1, "uri");
+
+var hIn2 = "a41c301a310b3009060355040613024a50310b3009060355040a0c025431";
+var pExpect2 = {
+  dn: {
+    array: [
+      [{type:"C", value:"JP", ds:"prn"}],
+      [{type:"O", value:"T1", ds:"utf8"}]
+    ],
+    str: "/C=JP/O=T1"
+  }
+};
+deepEqual(x.getGeneralName(hIn2), pExpect2, "dn");
+
 });
 
 test("getX500NameRule test", function() {
@@ -864,12 +902,39 @@ equal(x.getX500NameRule([[{type:"C",value:"JP",ds:"prn"}],[{type:"O",value:"b",d
 
 test("getX500Name test", function() {
 var x = new X509();
-deepEqual(
-x.getX500Name("302a310b3009060355040613024a50310a3008060355040a0c0162310f300d060355040316066140612e6a70"),
-[[{type:"C",value:"JP",ds:"prn"}],
-[{type:"O",value:"b",ds:"utf8"}],
-[{type:"CN",value:"a@a.jp",ds:"ia5"}]],
-"[CN a@a.jp ia5]");
+
+var hIn1 = "302a310b3009060355040613024a50310a3008060355040a0c0162310f300d060355040316066140612e6a70";
+var pExpect = {
+  array: [
+    [{type:"C",value:"JP",ds:"prn"}],
+    [{type:"O",value:"b",ds:"utf8"}],
+    [{type:"CN",value:"a@a.jp",ds:"ia5"}]
+  ],
+  str: "/C=JP/O=b/CN=a@a.jp"
+};
+deepEqual(x.getX500Name(hIn1), pExpect, "/C=JP/O=b/CN=a@a.jp")
+
+var hIn2 = "30123110300e06035504030c0743c3a06e617279";
+var pExpect2 = {
+  array: [
+    [{type:"CN",value:"Cànary",ds:"utf8"}]
+  ],
+  str: "/CN=Cànary"
+};
+deepEqual(x.getX500Name(hIn2), pExpect2, "/CN=Cànary (UTF-8 non ascii)")
+
+var hIn3 = "3081cf310b300906035504061302415431818b308188060355040a1e81800041002d005400720075007300740020004700650073002e0020006600fc007200200053006900630068006500720068006500690074007300730079007300740065006d006500200069006d00200065006c0065006b00740072002e00200044006100740065006e007600650072006b00650068007200200047006d0062004831183016060355040b130f412d54727573742d5175616c2d3031311830160603550403130f412d54727573742d5175616c2d3031";
+var pExpect3 = {
+  array: [
+    [{type:"C",value:"AT",ds:"prn"}],
+    [{type:"O",value:"A-Trust Ges. für Sicherheitssysteme im elektr. Datenverkehr GmbH",ds:"bmp"}],
+    [{type:"OU",value:"A-Trust-Qual-01",ds:"prn"}],
+    [{type:"CN",value:"A-Trust-Qual-01",ds:"prn"}]
+  ],
+  str: "/C=AT/O=A-Trust Ges. für Sicherheitssysteme im elektr. Datenverkehr GmbH/OU=A-Trust-Qual-01/CN=A-Trust-Qual-01"
+};
+deepEqual(x.getX500Name(hIn3), pExpect3, "BMP(ICS2) non ascii)")
+
 });
 
 test("getRDN test", function() {
@@ -900,6 +965,22 @@ x.getAttrTypeAndValue("3009060355040613024a50"),
 "C JP prn");
 });
 
+test("X509.dnarraytostr", function() {
+var x = new X509();
+
+var a1 = [[{type:"C",value:"JP",ds:"prn"}],[{type:"O",value:"T1",ds:"prn"}]];
+var s1 = "/C=JP/O=T1";
+equal(x.dnarraytostr(a1), s1, s1);
+
+var a2 = [
+  [{type:"C",value:"JP",ds:"prn"}],
+  [{type:"O",value:"T1",ds:"prn"},{type:"CN",value:"Bob",ds:"prn"}]
+];
+var s2 = "/C=JP/O=T1+CN=Bob";
+equal(x.dnarraytostr(a2), s2, s2);
+});
+
+
 });
 </script>
   
@@ -921,6 +1002,6 @@ x.getAttrTypeAndValue("3009060355040613024a50"),
 </p>
 
 </body>
-<center><p>&copy; 2015-2020 Kenji Urushima</p></center>
+<center><p>&copy; 2015-2021 Kenji Urushima</p></center>
 </html>
 

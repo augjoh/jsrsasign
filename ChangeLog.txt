@@ -1,6 +1,272 @@
 
 ChangeLog for jsrsasign
 
+remove all YUI dependency
+* Changes from 10.2.0 to 10.3.0
+  - remove YUI library dependency
+  - LICENSE.txt
+    - remove YUI license
+  - src/base64x.js
+    - add extendClass function to replace YUI class extend
+  - src/*.js
+    - replace YAHOO.lang.extend to extendClass all
+  - src/keyutil.js
+    - change to raise exception in KEYUTIL class with Error class
+  - src/asn1x509.js
+    - API document update for Extesions and CRLReason class
+  - npm_util/package.json
+    - fix dependencies (#482)
+  - test/qunit-do-*.html
+    - updated to follow above
+  - test/qunit-do-base64x-class.html added
+    - test for extendClass function
+
+CVE-2021-30246 RSAKey.verify issue fix
+* Changes from 10.1.13 to 10.2.0 (2021-04-14)
+  - src/rsasign.js
+    - CVE-2021-30246 RSAKey.verify issue was fixed (#478)
+  - src/asn1cms.js
+    - IssuerSerial, IsseruAndSerialNumber API document update
+  - sample_node/asn1extract2
+    - change to "/usr/bin/env node"
+
+add non-ascii BMPString support
+* Changes from 10.1.12 to 10.1.13 (2021-03-08)
+  - src/base64x.js
+    - add ucs2hextoutf8 function
+  - src/x509.js
+    - X509.getAttrTypeAndValue supports non-ascii BMPString (#474)
+  - src/asn1hex.js
+    - ASN1HEX.dump supports non-ascii BMPString
+  - test/qunit-do-{asn1hex-dump,x509-ext,base64x}.html
+    - updated to follow above
+
+fix for wrong UTF-8 encoding in distinguished name parser
+* Changes from 10.1.11 to 10.1.12 (2021-02-25)
+  - src/x509.js
+    - fix X509.getAttrTypeValue (#473)
+      - attribute value is converted by hextoutf8 not hextorstr
+    - X509.getIssuerString update to use getIssuer
+    - X509.getSubjectString update to use getSubject
+    - X509.dnarraytostr fix to escape "+" and "/"
+    - X509.hex2dn update to use getX500Name
+  - test/qunit-do-x509-ext.html
+    - updated to follow above
+
+update X509.getVersion and add jsrsasign-util saveFileJSON
+* Changes from 10.1.10 to 10.1.11 (2021-02-19)
+  - src/x509.js
+    - X509.getVersion supports other than 
+      empty(DEFAULT =v1) and [0] {INTEGER 2} (=v3).
+      Thus version checking is relaxed. (#471)
+  - src/nodeutil.js (jsrsasign-util 1.0.4)
+    - add saveFileUTF8
+    - saveFileJSON API document fix
+
+extend support for distinguished name
+* Changes from 10.1.9 to 10.1.10 release (2021-02-14)
+  - src/asn1x509.js
+    - AttributeTypeAndValue
+      - add support for OID and oid name constructor 
+        AttributeTypeAndValue({str: "/streetAddress=foo"})
+        AttributeTypeAndValue({str: "/2.5.4.9=foo"})
+    - OID.name2oidList
+      - add givenName
+  - test/qunit-do-asn1x509.html
+    - updated to follow above
+
+Add SubjectDirectoryAttributes extension support
+* Changes from 10.1.8 to 10.1.9 release (2021-02-12)
+  - src/asn1x509.js
+    - SubjectDirectoryAttributes class added
+    - Extensions class updated to support
+      SubjectDirectoryAttributes
+    - OID class update to support OIDs
+      such as gender, placeOfBirth et.al. for
+      SubjectDirectoryAttributes.
+    - SubjectDirectoryAttributes parser is
+      needed to be implemented in X509.js future.
+  - test/qunit-do-asn1x509.html
+    - updated to follow above
+
+KEYUTIL supports PKCS8 private key with extension
+* Changes from 10.1.5 to 10.1.8 release (2021-02-08)
+  - src/keyutil.js
+    - KEYUTIL.parsePlainPrivatePKCS8Hex now supports
+      private key extsion and and issue #454 fixed.
+  - test/qunit-do-keyutil-eprv.html
+    - updated to follow above
+
+CAdES-T support update and fix
+* Changes from 10.1.4 to 10.1.5 release (2021-01-17)
+  - tool/tool_cades.html fix (#465)
+    - now works fine again for CAdES-T demo
+  - src/asn1cms.js
+    - SignerInfo class
+      - unsigned attribute support again
+    - Attribute class 
+      - add signaturePolicyIdentifier support
+      - add signatureTimeStamp support
+    - CMSParser class
+      - add signaturePolicyIdentifier support
+      - add setSignaturePolicyIdentifier method
+  - src/asn1cades.js
+    - CAdESUtil class
+      - parseSignedDataForAddingUnsigned modified to use CMSParser
+      - addSigTS removed since it was empty method
+      - parseSignerInfoForAddingUnsigned is deprecated since
+        parseSignedDataForAddingUnsigned will not call it.
+  - src/crypto.js
+    - Mac API document fix (#466)
+
+getPKIStatusInfo bugfix
+* Changes from 10.1.3 to 10.1.4 release (2020-11-23)
+  - asn1tsp.js
+    - TSPParser class
+      - getPKIStatusInfo out parameter name bugfix
+  - test/qunit-do-asn1hex.html
+    - updated to follow above
+
+TSPParser.getPKIStatusInfo update
+* Changes from 10.1.2 to 10.1.3 release (2020-11-22)
+  - asn1tsp.js
+    - TSPParser class
+      - getPKIStatusInfo updated to
+        supports PKIFreeText and PKIFailureInfo
+      - getPKIFreeText added
+      - getPKIFailureInfo added
+  - asn1hex.js
+    - ASN1HEX class
+      - getString added
+      - getInt method updated to supports ASN.1 BitString
+  - base64x.js
+    - function bitstrtoint, inttobitstr added
+  - test/qunit-do-{asn1hex,asn1tsp,base64x}.html
+    - updated to follow above
+
+add SigningCertificateV2 for CMSParser and issue fix
+* Changes from 10.1.1 to 10.1.2 release (2020-11-21)
+  - src/asn1cms.js
+    - CMSParser
+      - getAttribute updated to support
+        SigningCertificateV2
+      - add setSigningCertificateV2 method
+      - add getESSCertIDv2 method
+      - change sortflag of result parameter to true in 
+        CMSParser.getCertificateSet 
+  - test/qunit-do-asn1cms.html
+    - updated to follow above
+
+CMSSignedData and TimeStamp parser bugfix
+* Changes from 10.1.0 to 10.1.1 release (2020-11-20)
+  - src/asn1tsp.js
+    - "serialNumber" parameter was changed to
+      "serial" in TSTInfo class and TSPParser.getTSTInfo
+      method.
+  - src/asn1cms.js
+    - change method name CMSParser.getAttributeArray to 
+      CMSParser.getAttributeList to align to the name
+      AttributeList class.
+    - getAttributeList returns JSON parameter which
+      can be accepted by AttributeList constructor.
+    - wrong sighex value for signature value
+      by getSignerInfo method was fixed.
+  - test/qunit-do-asn1tsp.html
+    - updated to follow above
+
+add new CMSSignedData and TimeStamp parser and X500Name update
+* Changes from 10.0.5 to 10.1.0 release (2020-11-19)
+  - add new CMSSignedData and TimeStamp parser
+  - X500.get{X500Name,GeneralName,GeneralNames} result change
+  - src/asn1cms.js
+    - new CMSParser class for CMS SignedData
+      - get{CMSSignedData,SignedData,HashAlgArray,
+        EContent,SignerInfos,SignerInfo,SignerIdentifier,
+	IssuerAndSerialNumber,AttributeArray,
+	Attribute,ESSCertID,IssuerSerial,CertificateSet}
+      - set{ContentType,SigningTime,MessageDigest,
+        SigningCertificate}
+  - src/asn1tsp.js
+      - new TSPParser class to parser RFC 3161 TSP protocol
+      - get{Response,Token,TSTInfo,Accuracy,MessageImprint,
+        PKIStatusInfo}
+      - setTSTInfo
+  - src/asn1.js
+    - DERObjectIdentifier class update to use new oidtohex
+  - src/asn1hex.js
+    - add ASN1HEX.{getInt,getOID,getOIDName}
+  - src/asn1csr.js
+    - CSRUtil.getParam result "subject" parameter result is changed
+      because of X509.getX500Name update.
+  - src/asn1x509.js
+    - small update for Time class
+    - small update for Certificate.sign method
+    - document fix (issue #463)
+  - src/base64x.js
+    - function "oidtohex" and "hextooid" added.
+    - function "ishex" added
+    - KJUR.lang.String.isHex now *DEPRECATED*. Please use "ishex".
+  - src/x509.js
+    - X509.getX500Name update
+      - X509.get{Issuer,Subject,GeneralNames,GeneralName}
+    - add X509.{getX500NameArray,dnarraytostr}
+  - src/x509crl.js
+    - X509CRL.getIssuer update for X509.getX500Name update
+  - test/qunit-do-{asn1tsp,asn1cms,asn1hex,asn1x509-newcert-veri,
+    base64x,x509-ext,x509crl}.html
+    - updated to follow above
+
+small issue fixes and updates
+* Changes from 10.0.4 to 10.0.5 release
+  - src/base64x.js
+    - utf8tob64u, b64utoutf8 
+      replace new Buffer() to Buffer.from() for 
+      Node.JS deprecation (issue #460)
+  - src/asn1x509.js
+    - P-256 oid added in OID class (PR #461 #333)
+  - src/x509.js
+    - document fix
+  - tool/tool_csr.html
+    - update to show ASN.1 dump of CSR
+  - test/qunit-do-base64x.html, npm/test/t_base64x.js
+    - update test code to follow above
+
+add methods to modify some extension parameters
+* Changes from 10.0.3 to 10.0.4 (2020-Oct-23)
+  - src/x509.js
+    - add X509.updateExt{CDPFullURI,AIAOCSP,AIACAIssuer} method
+  - src/nodeutil.js
+    - add read{JSON,JSONC},saveJSON,printJSON method added
+    - jrsasign-util npm package updated
+  - test/qunit-do-x509-param.html
+    - updated to follow above
+
+add findExt method in X509 class
+* Changes from 10.0.2 to 10.0.3 (2020-Oct-21)
+  - src/x509.js
+    - add X509.findExt method
+  - test/qunit-do-x509-param.html
+    - updated to follow above
+
+AdobeTimeStamp X.509v3 extension parser bugfix
+* Changes from 10.0.1 to 10.0.2 (2020-Oct-14)
+  - src/x509.js
+    - X509.getExtAdobeTimeStamp method bugfix
+
+AdobeTimeStamp X.509v3 certificate extension added
+* Changes from 10.0.0 to 10.0.1 (2020-Oct-13)
+  - src/asn1x509.js
+    - AdobeTimeStamp class added
+    - add AdobeTimeStamp support in Extension class
+    - add "adobeTimeStamp" OID in OID class
+  - src/x509.js
+    - add getExtAdobeTimeStamp method to X509 class  
+    - add "adobeTimeStamp" support in getExtParam
+  - src/asn1.js
+    - DERBoolean add support for "false" value.
+  - test/qunit-do-{asn1,asn1x509,x509}.html
+    - updated to follow above
+
 Major update for CMS SigneData TimeStamp and CAdES
 * Changes from 9.1.9 to 10.0.0 (2020-Sep-24)
   - major update for CMS SignedData related classes

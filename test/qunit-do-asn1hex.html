@@ -8,7 +8,7 @@
 <script type="text/javascript" src="qunit.js"></script>
 <link rel="stylesheet" href="qunit.css" type="text/css" media="screen" />
 
-<script src="../ext/yahoo.js"></script>
+
 <script src="../ext/jsbn.js"></script>
 <script src="../ext/jsbn2.js"></script>
 <script src="../ext/rsa.js"></script>
@@ -290,6 +290,13 @@ equal(ASN1HEX.getVbyListEx(h, 0, [0,3]), "06", "[0,3]=06"); // skip context tag
 equal(ASN1HEX.getVbyListEx(h, 0, [0,3], "03", false), "0006", "[0,3]=0006"); // don't remove unusedbits
 })
 
+test("ASN1HEX.getInt test", function() {
+var _getInt = ASN1HEX.getInt;
+equal(_getInt("xxxx020103xxxxxx", 4), 3, "int 3");
+equal(_getInt("xxxx03020780xxxxxx", 4), 1, "bitstr 0780 = 1");
+equal(_getInt("xxxx030203c8xxxxxx", 4), 25, "bitstr 03c8 = 25");
+});
+
 /*
 test("oidstrtohex", function() {
   expect(3);
@@ -302,7 +309,6 @@ test("oidstrtohex", function() {
  */
 
 test("hextooidstr", function() {
-  expect(3);
   equal(ASN1HEX.hextooidstr("2a"), "1.2", "2a->1.2");
   equal(ASN1HEX.hextooidstr("608648016503040201"),  // SHA256
         "2.16.840.1.101.3.4.2.1", "sha256");
@@ -410,4 +416,3 @@ equal(ASN1HEX.isContextTag("a0", "[3]"), false, "a0=[3] false");
 </p>
 </body>
 </html>
-
